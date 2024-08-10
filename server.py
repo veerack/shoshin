@@ -188,7 +188,6 @@ async def view_profile(data):
 @cookie_check(cookie_name="_sho-session", redirect='no_redirect')
 @requires_valid_session_token
 async def dms(data, uid):
-
     _fr = []
 
     if data['friends']:
@@ -198,9 +197,29 @@ async def dms(data, uid):
                 friend_data = await app.pool.fetchrow("SELECT * FROM users WHERE uid = $1", d['uid'])
                 _fr.append(friend_data)
 
-    log.info(_fr)
+    # Fetch messages between the current user (uid) and all friends
+    messages = []
+    if len(_fr) > 0:
+        for friend in _fr:
+            friend_uid = friend['uid']
+            # Fetch messages between current user and this friend
+            msgs = await app.pool.fetch(
+                """
+                SELECT * FROM messages
+                WHERE (sender_uid = $1 AND receiver_uid = $2)
+                   OR (sender_uid = $2 AND receiver_uid = $1)
+                ORDER BY sent_at ASC;
+                """,
+                int(uid), friend_uid
+            )
+            messages.append({
+                'friend_uid': friend_uid,
+                'messages': dict(msgs)
+            })
 
-    return await render_template("dms/dm.html", data=data, uid=uid, friends=_fr)
+    #log.info(f"Messages between {uid} and {friend_uid}: {messages}")
+
+    return await render_template("dms/dm.html", data=data, uid=uid, friends=_fr, messages=messages)
 
 # Filter only specific routes for documentation
 @app.route('/openapi.json')

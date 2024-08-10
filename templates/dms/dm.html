@@ -19,13 +19,14 @@
     <link rel="icon" href="../static/assets/favicon.png"/>
     <link rel="stylesheet" href="../../static/css/output.css">
     <script src="../../static/js/socket/_connector.js"></script>
+    <script src="../../static/js/dms/dms.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 </head>
-<body>
-    {% include 'dms/_navbar.html' %}
-    <div class="flex flex-row">
+<body class="basic-font">
+    <div class="grid grid-cols-[theme(spacing.64)_1fr] grid-rows-[auto_1fr] h-screen">
+        {% include 'dms/_navbar.html' %}
         {% include 'dms/_sidebar.html' %}
+        {% include 'dms/_chatbox.html' %}
     </div>
-    <p id="user-id">{{ uid }}</p>
 </body>
 </html>

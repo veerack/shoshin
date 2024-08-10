@@ -1,8 +1,21 @@
-<div id="menuSidebar" class="bg-[#191f22] w-64 border-r-2 border-orange-500 absolute md:relative md:top-0 h-full z-20 overflow-auto -translate-x-full md:-translate-x-0 transition-transform duration-300">
-    {% for friend in friends %}
-        <div class="flex flex-col gap-2 p-4 hover:bg-[#2d3336] hover:cursor-pointer">
-            <img src="{{ friend['avatar'] if friend['avatar'] else '/static/assets/default_avatar.png' }}" alt="profile picture" class="w-10 h-10 rounded-full"/>
-            <p class="text-white text-sm">{{ friend['username'] }}</p>
+<div id="menuSidebar" class="bg-[#191f22] w-full border-r-2 border-orange-500 absolute md:relative md:top-0 h-full z-20 overflow-auto -translate-x-full md:-translate-x-0 transition-transform duration-300">
+    <div class="flex flex-col gap-2 h-full">
+        <p class="text-gray-400 font-medium text-sm mx-2 px-2 mt-4">DIRECT MESSAGES</p>
+        {% if friends | length == 0 %}
+            <p class="text-gray-400 font-medium text-sm mx-2 px-2">No friends found.</p>
+        {% endif %}
+        {% for friend in friends %}
+        <div class="flex flex-row gap-2 mx-2 rounded-md px-2 items-center hover:bg-[#2d3336] hover:cursor-pointer _sho-DMsSidebarUserElement">
+            <img id="_sho-DMsAvatar" src="{{ friend['avatar'] if friend['avatar'] else '/static/assets/default_avatar.png' }}" alt="profile picture" class="w-10 h-10 rounded-full">
+            <div class="flex flex-col p-2 truncate">
+                <p id="_sho-DMsUsername" class="text-white text-lg font-semibold">{{ friend['username'] }}</p>
+                {% if messages['messages'] | length > 0 %}
+                    <p class="text-gray-400 text-sm font-normal truncate">{{ messages[0]['message'] }}</p>
+                {% else %}
+                    <a class="text-gray-400 text-sm font-normal truncate">{{ friend['bio'] if friend['bio'] else '...' }}</a>
+                {% endif %}
+            </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
