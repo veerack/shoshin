@@ -286,15 +286,15 @@ def requires_valid_session_token(func):
         return redirect(url_for('login'))
     return wrapper_session
 
-def cookie_check(cookie_name, redirect: str):
+def cookie_check(cookie_name, red: str):
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
             cookie_value = request.cookies.get(cookie_name)
             if cookie_value:
-                if redirect == "no_redirect":
+                if red == "no_redirect":
                     return await func(*args, **kwargs)
-                return redirect(url_for(redirect))
+                return redirect(url_for(red))
             # If the cookie does not exist, call the original function
             return await func(*args, **kwargs)
         

@@ -5,7 +5,7 @@ import settings as _WebSettings
 import logging
 from utility import PIL
 from quart_cors import cors, route_cors
-from utility.methods import requires_valid_origin, SessionManager
+from utility.methods import requires_valid_origin, SessionManager, requires_valid_session_token, cookie_check
 from utility.schemas import requires, SendRequestSchema, EnvSchema, UsernameSchema, SearchSchema, HandleFriendRequestSchema, HandleFriendsSchema, Token
 import json
 
@@ -224,6 +224,8 @@ async def handle_friend_request(data):
     user = await SessionManager.validate_token(token)
     friend = await current_app.pool.fetchrow('SELECT friends FROM users WHERE uid=$1', int(request_uid))
 
+    log.info(f"Searching {request_uid} in {json.loads(user['friends'])['requests']}")
+
     if not user or not friend:
         return jsonify({'status': 'error', 'payload': 'User not found'}), 400
 
@@ -244,9 +246,6 @@ async def handle_friend_request(data):
         }
     else:
         user_friends = json.loads(user['friends'])
-
-    if 'requests' not in user_friends or int(request_uid) not in user_friends['requests']:
-        return jsonify({'status': 'error', 'payload': 'No friend request found'}), 400
 
     if action == 'accept':
         user_friends['requests'].remove(int(request_uid))
@@ -563,6 +562,48 @@ async def check_username(data):
     else:
         return {"status": "success", "message": "This username is available.", "result": True}, 200
     
+@api_bp.route('/messages/<user_uid>', methods=['POST'])
+@route_cors(allow_origin="https://beta.shoshin.moe")
+@requires_valid_origin
+async def get_messages(user_uid):
+    """Get the messages between the authenticated user and another user.
+
+    Parameters
+    ----------
+    user_uid : str
+        The UID of the other user.
+
+    Returns
+    -------
+    200 OK
+    ---------
+    status : str
+        The status of the request process.
+    payload : list
+        The list of messages.
+            - message : str
+                The message content.
+            - sender : str
+                The UID of the sender.
+            - receiver : str
+                The UID of the receiver.
+            - timestamp : str
+                The timestamp of the message.
+    """
+    uid_cookie = request.cookies.get('_sho-session')
+    if uid_cookie:
+        uid_data = SessionManager.parse_cookie(uid_cookie)
+        data = await SessionManager.validate_token(uid_data['raw']['token'])
+
+        messages = await current_app.pool.fetch(
+            "SELECT * FROM messages WHERE (sender_uid=$1 AND receiver_uid=$2) OR (sender_uid=$2 AND receiver_uid=$1) ORDER BY sent_at ASC",
+            data['uid'],
+            int(user_uid)
+        )
+
+        return jsonify({"status": "success", "payload": dict(messages)})
+
+
 @api_bp.route("/generate_build", methods=["POST"])
 @route_cors(allow_origin="https://beta.shoshin.moe")
 @requires_valid_origin

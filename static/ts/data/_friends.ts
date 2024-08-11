@@ -189,26 +189,28 @@ async function fetchFriendRequests(): Promise<void> {
             }
         });
 
-        data.payload.in.forEach(friend => {
+        data.payload.in.forEach((friend, index) => {
+            const uniqueId = friend.uid; // Using UID to ensure uniqueness
+        
             const friendHTML = `
             <div class="flex flex-row items-center gap-4 hover:bg-gray-800/30 p-4 hover:cursor-pointer group">
                 <img src="${friend.avatar || 'https://beta.shoshin.moe/static/assets/default_avatar.png'}" class="w-12 h-12 rounded-full">
                 <div class="flex flex-col gap-1">
                     <div class="flex flex-row gap-2 items-center">
                         <p class="text-gray-300 font-bold text-lg">${friend.username}</p>
-                        <p id="_sho-requestsUserUID" class="text-gray-600 font-semibold text-xs hidden group-hover:block">${friend.uid}</p>
+                        <p id="_sho-requestsUserUID-${uniqueId}" class="text-gray-600 font-semibold text-xs hidden group-hover:block">${friend.uid}</p>
                     </div>
                     <p class="text-gray-400 font-medium text-sm">${'Incoming Request'}</p>
                 </div>
                 <div class="flex flex-row gap-4 ml-auto">
-                    <div id="_sho-accept-request" class="group/accept rounded-full bg-gray-800 relative w-auto items-center flex justify-center px-3 py-2">
+                    <div id="_sho-accept-request-${uniqueId}" class="group/accept rounded-full bg-gray-800 relative w-auto items-center flex justify-center px-3 py-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-person-plus" viewBox="0 0 16 16">
                             <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
                             <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
                         </svg>
                         <p class="text-gray-300 font-medium text-md px-2 py-1 hover:cursor-pointer absolute bottom-8 -translate-y-1/2 hidden group-hover/accept:block bg-black rounded-md w-auto text-nowrap">Accept</p>
                     </div>
-                    <div id="_sho-deny-request" class="group/deny rounded-full bg-gray-800 relative w-auto items-center flex justify-center px-3 py-2">
+                    <div id="_sho-deny-request-${uniqueId}" class="group/deny rounded-full bg-gray-800 relative w-auto items-center flex justify-center px-3 py-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-person-slash" viewBox="0 0 16 16">
                             <path d="M13.879 10.414a2.501 2.501 0 0 0-3.465 3.465zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465m-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
                         </svg>
@@ -219,11 +221,11 @@ async function fetchFriendRequests(): Promise<void> {
             <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
             `;
             friendButtons.friendRequestsList.div.insertAdjacentHTML('beforeend', friendHTML);
-
-            const acceptButton = document.getElementById('_sho-accept-request') as HTMLElement;
-            const denyButton = document.getElementById('_sho-deny-request') as HTMLElement;
-            const userUID = document.getElementById('_sho-requestsUserUID') as HTMLElement;
-
+        
+            const acceptButton = document.getElementById(`_sho-accept-request-${uniqueId}`) as HTMLElement;
+            const denyButton = document.getElementById(`_sho-deny-request-${uniqueId}`) as HTMLElement;
+            const userUID = document.getElementById(`_sho-requestsUserUID-${uniqueId}`) as HTMLElement;
+        
             acceptButton.addEventListener('click', function() {
                 fetch('/api/friend/request/handle', {
                     method: 'POST',
@@ -238,7 +240,6 @@ async function fetchFriendRequests(): Promise<void> {
                         return response.json();
                     }
                     if (response.status === 400) {
-                        // Since i'm doing jsonify in quart like `jsonify({'error': 'Request already accepted'}), 400`, let's console.log the json
                         response.json().then(console.log);
                         return;
                     }
@@ -252,7 +253,7 @@ async function fetchFriendRequests(): Promise<void> {
                     console.error(error);
                 });
             });
-
+        
             denyButton.addEventListener('click', function() {
                 fetch('/api/friend/request/handle', {
                     method: 'POST',
@@ -267,7 +268,6 @@ async function fetchFriendRequests(): Promise<void> {
                         return response.json();
                     }
                     if (response.status === 400) {
-                        // Since i'm doing jsonify in quart like `jsonify({'error': 'Request already accepted'}), 400`, let's console.log the json
                         response.json().then(console.log);
                         return;
                     }
@@ -281,7 +281,7 @@ async function fetchFriendRequests(): Promise<void> {
                     console.error(error);
                 });
             });
-
+        
         });
 
         data.payload.out.forEach(friend => {

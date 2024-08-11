@@ -56,3 +56,18 @@ export interface FetchResponse {
 export interface Mapping {
     [key: string]: string;
 }
+
+export interface Payload {
+    message: string;
+    recipient_uid: string;
+    timezone: string;
+    [key: string]: any; // This allows adding new keys dynamically
+}
+
+export interface RenderPayload {
+    message: string;
+    username: string | null;
+    avatar_url: string;
+    sent_at: string;
+    [key: string]: any;
+}
