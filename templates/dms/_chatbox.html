@@ -1,9 +1,9 @@
-<div class="w-full h-full bg-[#191f22] flex flex-col basic-font overflow-hidden">
+<div class="w-screen md:w-full h-full bg-[#191f22] flex flex-col basic-font overflow-hidden">
     <div id="_sho-chatBox" class="flex flex-col h-full hidden overflow-y-auto">
-        <div id="_sho-chatBoxHeader" class="w-full h-auto bg-gray-900 p-4 sticky top-0 z-20">
+        <div id="_sho-chatBoxHeader" class="w-full h-auto bg-gray-900 p-4 sticky top-0 z-50">
             <div class="flex flex-row gap-2 items-center">
-                <img id="_sho-chatBoxUserAvatar" src="https://beta.shoshin.moe/static/assets/default_avatar.png" class="w-10 rounded-full">
-                <p id="_sho-chatBoxUserUsername" class="text-white font-medium text-2xl">Username</p>
+                <img id="_sho-chatBoxUserAvatar" src="https://beta.shoshin.moe/static/assets/default_avatar.png" class="w-8 md:w-10 rounded-full">
+                <p id="_sho-chatBoxUserUsername" class="text-white font-medium text-md md:text-2xl">Username</p>
                 <div class="ml-auto flex gap-4">
                     <div class="group/call rounded-full p-3 hover:bg-gray-500/30 hover:cursor-pointer transition duration-150 hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="orange" stroke-width="0.4" fill="white" class="bi bi-telephone transition duration-500 group-hover/call:rotate-90" viewBox="0 0 16 16">
@@ -25,17 +25,17 @@
             <div class="flex flex-col">
                 <div class="ml-8 mb-4 flex flex-col gap-6">
                     <div class="flex flex-row items-center gap-8">
-                        <img id="_sho-chatBoxFirstSeenAvatar" src="https://beta.shoshin.moe/static/assets/default_avatar.png" class="w-24 rounded-full shadow-md shadow-rose-400">
+                        <img id="_sho-chatBoxFirstSeenAvatar" src="https://beta.shoshin.moe/static/assets/default_avatar.png" class="w-16 md:w-24 rounded-full shadow-md shadow-rose-400">
                         <div class="flex flex-col gap-4">
-                            <p id="_sho-chatBoxFirstSeenName" class="text-4xl font-normal text-white"></p>
-                            <p id="_sho-chatBoxFirstSeenUid" class="text-md font-normal text-gray-400"></p>
+                            <p id="_sho-chatBoxFirstSeenName" class="text-lg md:text-4xl font-normal text-white"></p>
+                            <p id="_sho-chatBoxFirstSeenUid" class="text-sm md:text-md font-normal text-gray-400"></p>
                         </div>
                     </div>
                     <p class="text-gray-400 font-normal text-sm">Nothing better than a fresh new conversation!</p>
                 </div>
 
                 <!-- Chat messages area -->
-                <div id="chatMessages" class="w-full h-full flex flex-col space-y-4 overflow-visible">
+                <div id="chatMessages" class="w-full h-full flex flex-col overflow-visible">
                 </div>
 
             </div>
@@ -54,17 +54,49 @@
                 <p id="_sho-upperAreaMessageContent" class="text-gray-400 font-normal text-sm w-auto break-words"></p>
             </div>
         </div>
-        <div id="chatTextAreaDiv" class="w-auto border-orange-500 h-auto p-1 rounded-b-md bg-gray-800 hidden">
+    
+        <div id="chatTextAreaDiv" class="relative w-auto border-orange-500 h-auto p-1 rounded-b-md bg-gray-800 hidden">
             <div class="flex flex-row items-center">
+                <!-- File Upload Button -->
                 <div class="hover:bg-gray-500/30 rounded-full p-3 hover:cursor-pointer w-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-upload" viewBox="0 0 16 16">
                         <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                         <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                     </svg>
                 </div>
-                <textarea id="chatTextarea" class="w-full bg-transparent border-none outline-none text-white ml-2 resize-none overflow-hidden p-0 box-border" style="min-height: 24px; line-height: 24px;" placeholder="Your cool looking messages goes here! ^.^/"></textarea>
+        
+                <!-- Textarea for input -->
+                <textarea id="chatTextarea" class="w-full bg-transparent border-none outline-none text-white ml-2 resize-none overflow-hidden p-0 box-border" style="min-height: 24px; line-height: 24px;" placeholder="Type a message..."></textarea>
+        
+                <!-- Emoji/GIF Picker Button -->
+                <div id="emojiGifButton" class="hover:bg-gray-500/30 rounded-full p-3 hover:cursor-pointer w-auto relative ml-auto mr-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-emoji-smile" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5"/>
+                    </svg>
+                </div>
             </div>
+    
+        <!-- Emoji and GIF menu -->
+        <div id="emojiGifMenu" class="bg-gray-900 rounded-md p-2 mb-2 w-full md:w-1/3 h-auto absolute bottom-full right-0 z-30 border border-gray-800 shadow-xl">
+            <div class="flex flex-col gap-2 py-1 px-2">
+                <div class="flex flex-row gap-2 items-center p-1">
+                    <button id="emojiTab" class="text-gray-300 hover:cursor-pointer bg-gray-500/30 hover:bg-gray-500/30 rounded-md hover:text-white font-medium transition py-1 px-2 duration-100">Emojis</button>
+                    <button id="gifTab" class="text-gray-300 hover:cursor-pointer hover:bg-gray-500/30 rounded-md hover:text-white font-medium transition py-1 px-2 duration-100">GIFs</button>
+                </div>
+                <div id="_sho-EmojiOrGIFSearchDiv" class="flex flex-row items-center gap-2 bg-gray-800 rounded-md py-1 px-2 text-white">
+                    <input id="_sho-EmojiOrGIFSearch" class="bg-transparent text-white border-none outline-none p-1 rounded-md w-full" type="text" placeholder="Search the right emoji">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-search ml-auto mr-1" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </div>
+            </div>
+            <!-- Container for Emoji content -->
+            <div id="emojiContent" class="content p-2 h-64 overflow-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900"></div>
+            <!-- Container for GIF content -->
+            <div id="gifContent" class="content p-2 hidden h-64 overflow-auto grid grid-cols-2 md:grid-cols-3 gap-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900"></div>
+        </div>
         </div>
     </div>
-    <img id="_sho-DMsPlaceholder" src="https://beta.shoshin.moe/static/assets/sapostartchat.png" class="w-1/2 h-auto mx-auto mt-8 translate-y-1/2">
+    <img id="_sho-DMsPlaceholder" src="https://beta.shoshin.moe/static/assets/sapostartchat.png" class="w-full md:w-1/2 h-auto mx-auto mt-8 translate-y-1/2">
 </div>

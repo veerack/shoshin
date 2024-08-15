@@ -23,24 +23,35 @@
                         <p class="text-white font-medium text-2xl">Public Assets</p>
                     </div>
                     <p class="text-gray-300 font-normal text-md">Here are your public profile picture and banner image. These will be visible on your profile page by anyone who visits it.</p>
-                    <div class="flex flex-col md:flex-row gap-2 md:gap-28 w-full items-center">
+                    <div class="flex flex-col sm:flex-row gap-2 md:gap-12 w-1/2 md:w-auto">
                         <div>
                             <p class="text-white font-semibold text-lg mt-0 md:mt-4 mb-3">Profile Picture</p>
-                            <div class="bg-gray-500/30 p-2 md:p-4 rounded-md w-auto">
-                                <div class="bg-gray-500/20 p-2 md:p-6 rounded-full relative group">
-                                    <div class="h-full w-full flex items-center justify-center overflow-hidden">
-                                        <img src="https:///beta.shoshin.moe/static/assets/default_avatar.png" class="rounded-full hover:opacity-50 hover:cursor-pointer">
-                                        <p class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-sm hidden group-hover:block select-none">Edit Picture</p>
+                              <div class="bg-gray-800 border border-gray-500 py-3 px-2 rounded-3xl relative group/pfp h-auto w-44">
+                                  <div class="flex items-center justify-center h-auto">
+                                    <div class="h-full md:h-44 w-full md:w-44 flex items-center justify-center overflow-hidden">
+                                        <!-- Label to trigger file input -->
+                                        <label for="avatarUploader" class="cursor-pointer relative flex items-center justify-center">
+                                            <img id="avatarImage" src="{{ data['avatar'] if data['avatar'] else '/static/assets/default_avatar.png'}}" class="rounded-full group-hover/pfp:opacity-50 h-40 w-72 object-cover">
+                                            <p id="avatarText" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-sm hidden group-hover/pfp:block select-none pointer-events-none">Edit Picture</p>
+                                        </label>
+                                        <!-- Hidden file input -->
+                                        <input type="file" id="avatarUploader" class="hidden" accept="image/*">
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <div>
                             <p class="text-white font-semibold text-lg mt-0 md:mt-4 mb-3">Banner Image</p>
-                            <div class="bg-gray-500/25 py-6 rounded-md relative group mb-4 w-full md:w-1/2">
-                                <div class="flex items-center justify-center overflow-hidden">
-                                    <img src="https:///beta.shoshin.moe/static/assets/default_banner.png" class="hover:opacity-50 hover:cursor-pointer">
-                                    <p class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-sm hidden group-hover:block select-none">Edit Banner</p>
+                            <div class="bg-gray-800 border border-gray-500 py-3 rounded-3xl h-auto w-72 group/banner">
+                                <div class="flex items-center justify-center h-auto">
+                                    <!-- Label to trigger file input -->
+                                    <label for="bannerUploader" class="cursor-pointer relative flex items-center justify-center w-full h-full">
+                                        <img id="bannerImage" src="{{ data['banner'] if data['banner'] else '/static/assets/default_banner.png'}}" class="hover:opacity-50 hover:cursor-pointer group-hover/banner:opacity-50 h-40 w-auto object-contain">
+                                        <p id="bannerText" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-sm hidden group-hover/banner:block select-none">Edit Banner</p>
+                                    </label>
+                                    <!-- Hidden file input -->
+                                    <input type="file" id="bannerUploader" class="hidden" accept="image/*">
                                 </div>
                             </div>
                         </div>
@@ -72,26 +83,6 @@
                 </div>
                 <p class="text-gray-300 font-normal text-sm mb-4">Tell us a little bit about yourself. This will be visible on your profile page.</p>
                 <textarea id="_sho-mng-bio-field" rows="4" class="w-full md:w-1/2 h-auto bg-[#2A3439] text-white text-lg p-4 rounded-md border-2 border-orange-500 resize-none" placeholder="Biography">None</textarea>
-            </div>
-        </div>
-        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
-            <div class="flex flex-col gap-2">
-                <div class="flex flex-row gap-2 items-center">
-                    <p class="text-white font-medium text-2xl">In-Game UIDs</p>
-                </div>
-                <p class="text-gray-300 font-normal text-sm mb-4">Your In-Game UIDs are the UIDs associated with your in-game accounts. These cannot be edited manually due to security reasons. 
-                    <a href="https://shoshin.moe/contact" class="text-blue-500 hover:underline hover:cursor-pointer hover:text-blue-400 underline-offset-2">Get in touch!</a>
-                </p>
-                <div class="flex flex-row gap-4 items-center">
-                    <div class="flex flex-col gap-2">
-                        <p class="text-white font-semibold text-md">Wuthering Waves</p>
-                        <input disabled="" id="_sho-mng-uid-wuwa-field" type="text" class="w-full md:w-96 h-12 bg-[#2A3439] text-white text-lg p-4 rounded-md border-2 border-orange-500 hover:cursor-not-allowed" value="324987232" placeholder="In-Game UID">
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <p class="text-white font-semibold text-md">Zenless Zone Zero</p>
-                        <input disabled="" id="_sho-mng-uid-zzz-field" type="text" class="w-full md:w-96 h-12 bg-[#2A3439] text-white text-lg p-4 rounded-md border-2 border-orange-500 hover:cursor-not-allowed" value="ZZZ" placeholder="In-Game UID">
-                    </div>
-                </div>
             </div>
         </div>
     </div>

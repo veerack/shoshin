@@ -184,10 +184,10 @@ async def view_profile(data):
 
     return await render_template("profile/account.html", data=data, achievements=_un, friends=_fr)
 
-@app.route("/u/<uid>/dms")
+@app.route("/messages")
 @cookie_check(cookie_name="_sho-session", red='no_redirect')
 @requires_valid_session_token
-async def dms(data, uid):
+async def dms(data):
     _fr = []
 
     if data['friends']:
@@ -210,7 +210,7 @@ async def dms(data, uid):
                    OR (sender_uid = $2 AND receiver_uid = $1)
                 ORDER BY sent_at ASC;
                 """,
-                int(uid), friend_uid
+                data['uid'], friend_uid
             )
             messages.append({
                 'friend_uid': friend_uid,
@@ -219,7 +219,7 @@ async def dms(data, uid):
 
     #log.info(f"Messages between {uid} and {friend_uid}: {messages}")
 
-    return await render_template("dms/dm.html", data=data, uid=uid, friends=_fr, messages=messages)
+    return await render_template("dms/dm.html", data=data, uid=data['uid'], friends=_fr, messages=messages)
 
 # Filter only specific routes for documentation
 @app.route('/openapi.json')

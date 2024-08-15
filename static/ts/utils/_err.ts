@@ -208,6 +208,7 @@ export class _Log1 {
             [300006, "MFA Failed", "AUTH", "ERROR"],
             [0, "General Error", "GENERAL", "ERROR"],
             [1, "General Success", "GENERAL", "INFO"],
+            [2, "Messages Log", "GENERAL", "LOG"],
         ];
         
         commonErrors.forEach(([code, message, category, severity]) => {
@@ -217,21 +218,3 @@ export class _Log1 {
 }
 
 export const _ = new _Log1();
-
-// Usage example
-// const errorCodes = new _Log1();
-
-// Logging an error
-// errorCodes.logError(20001, { server: "primary-db-01" });
-
-// Getting an error
-// const error = errorCodes.getError(30003);
-// console.log(error);
-
-// Adding a custom error
-// errorCodes.addError(90001, "Custom business logic error", "BUSINESS", "ERROR", {
-    // retryable: false,
-// });
-
-// Logging the custom error
-// errorCodes.logError(90001, { process: "order-fulfillment" });

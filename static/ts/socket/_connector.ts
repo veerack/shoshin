@@ -3,7 +3,9 @@ import { io, Socket } from 'socket.io-client';
 import { getCookie } from '../_cookie_manager';
 import chalk from "chalk";
 import { getCurrentTime } from '../utils/_time';
-import { renderMessage } from '../utils/_elements';
+import { renderMessage, initMessageOptions } from '../utils/_elements';
+import { currentActiveChatbox } from '../utils/_elements';
+import { _ } from '../utils/_err';
 
 let socket: Socket | null = null;
 
@@ -18,7 +20,7 @@ export const initializeSocket = async () => {
         if (st) {
             socket = io(_gateway, {
                 transports: ['websocket', 'polling'],
-                query: { t: st.raw.token, v: v }
+                query: { t: st, v: v }
             });
 
             // Listen for the connection_info event
@@ -49,8 +51,28 @@ export const initializeSocket = async () => {
                     sent_at: currentTime,
                     reply_to: data.reply_to
                 }, 'message_in');
-                chatMessages.insertAdjacentHTML('beforeend', chatBoxMessageHTML);
-                chatBox.scrollTop = chatBox.scrollHeight;
+            
+                _._(2, { chatBoxActiveUID: currentActiveChatbox, current_uid: data.sender.uid }, 'messages');
+            
+                if (currentActiveChatbox === data.sender.uid) {
+                    // Only append the message if the current active chatbox matches the sender's UID
+                    chatMessages.insertAdjacentHTML('beforeend', chatBoxMessageHTML);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    initMessageOptions();
+                } else {
+                    // Find the element inside const DMsSidebarItems = document.querySelectorAll('._sho-DMsSidebarUserElement');
+                    // that matches the sender's UID
+                    const DMsSidebarItems = document.querySelectorAll('._sho-DMsSidebarUserElement');
+                    DMsSidebarItems.forEach((element) => {
+                        const uid = element.querySelector('#_sho-DMsUid')?.textContent;
+                        console.log(`Matching UID: ${uid} with sender UID: ${data.sender.uid}. Current active chatbox: ${currentActiveChatbox}. Types of UIDs: ${typeof uid}, ${typeof data.sender.uid}`);
+                        if (uid === data.sender.uid) {
+                            const lastMessageInChat = element.querySelector('#_sho-lastMessageInChat') as HTMLElement;
+                            lastMessageInChat.textContent = formattedMessage;
+                            element.classList.add('_sho-newMessageIndicator');
+                        }
+                    });
+                }
             });
 
             socket.on('pong', () => {

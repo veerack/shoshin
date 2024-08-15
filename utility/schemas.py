@@ -10,7 +10,6 @@ def requires(spec_type):
         async def wrapper(*args, **kwargs):
             try:
                 data = await request.get_json()
-                print("Received data:", data)  # Debugging line
                 json_data = json.dumps(data).encode('utf-8')  # Convert dict to JSON string and then to bytes
                 validated_data = msgspec.json.decode(json_data, type=spec_type)
             except (msgspec.ValidationError, msgspec.DecodeError) as e:
@@ -28,7 +27,6 @@ class SessionToken(msgspec.Struct):
 class Authentication(msgspec.Struct):
     email: str
     code: str
-    uid: Optional[str] = None
     passw: Optional[str] = None
     username: Optional[str] = None
     action: Optional[str] = None
@@ -64,3 +62,8 @@ class HandleFriendsSchema(msgspec.Struct):
     token: str
     friend_uid: str
     action: str
+
+class assetsSchema(msgspec.Struct):
+    token: str
+    file: str
+    type: str

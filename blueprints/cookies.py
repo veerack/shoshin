@@ -24,8 +24,7 @@ async def get_cookie():
         return jsonify({'message': 'No cookie found'}), 404
 
     try:
-        cjson = SessionManager.parse_cookie(cookie_value)
-        return jsonify(cjson)
+        return jsonify(cookie_value)
     except Exception as e:
         log.info(e)
         return jsonify({'message': 'Error parsing cookie', 'error': str(e)}), 400

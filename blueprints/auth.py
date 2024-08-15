@@ -242,8 +242,6 @@ async def verify_code(data):
         The verification code sent to the user's email.
     passw : str, optional
         The password of the user (required for registration).
-    uid : int, optional
-        The UID of the user (required for registration).
     username : str, optional
         The username of the user (required for registration).
 
@@ -268,7 +266,7 @@ async def verify_code(data):
         The error message.
     """
     if data.action == "register":
-        if not all([data.email, data.code, data.passw, data.uid, data.username, data.action]):
+        if not all([data.email, data.code, data.passw, data.username, data.action]):
             return {"status": "error", "payload": "Missing required fields: email, code, passw, uid, username, action"}
         
         code = await current_app.pool.fetchrow("SELECT * FROM verification_codes WHERE email = $1 AND code = $2", data.email, int(data.code))
@@ -279,8 +277,18 @@ async def verify_code(data):
             _uuid = idgen.generate_id()
 
             token = SessionManager.create_session_token(data.username)
-            await current_app.pool.execute("INSERT INTO users (email, password, wuwa_uid, username, uid, sessions, achievements, registered_at) VALUES ($1, $2, $3, $4, $5, $6, ARRAY[$7::json], $8)", 
-                                           data.email, hashed_password.decode('utf-8'), int(data.uid), data.username, _uuid, [token], json.dumps({'name': 'create_account', 'time': datetime.datetime.now().timestamp()}), datetime.datetime.now()
+            await current_app.pool.execute("""
+                                           INSERT INTO users 
+                                           (email, 
+                                           password, 
+                                           username, 
+                                           uid, 
+                                           sessions, 
+                                           achievements, 
+                                           registered_at) 
+                                           VALUES ($1, $2, $3, $4, $5, ARRAY[$6::json], $7)
+                                           """, 
+                                           data.email, hashed_password.decode('utf-8'), data.username, _uuid, [token], json.dumps({'name': 'create_account', 'time': datetime.datetime.now().timestamp()}), datetime.datetime.now()
                                            )
             await current_app.pool.execute("INSERT INTO sessions (token, uid) VALUES ($1, $2)", token, _uuid)
 
@@ -288,7 +296,7 @@ async def verify_code(data):
             response = await make_response(jsonify({
                 "status": "success",
                 "payload": "Code is correct, redirecting you to the account page...",
-                "raw": { "uid": data.uid, "username": data.username, "token": token}
+                "raw": { "uid": _uuid, "username": data.username, "token": token}
             }))
         
 
@@ -312,7 +320,7 @@ async def verify_code(data):
             response = await make_response(jsonify({
                 "status": "success",
                 "payload": "Code is correct, redirecting you to the account page...",
-                "raw": { "uid": data.uid, "username": data.username, "token": token}
+                "raw": { "uid": uid, "username": data.username, "token": token}
             }))
             
             # Set the cookie on the response object

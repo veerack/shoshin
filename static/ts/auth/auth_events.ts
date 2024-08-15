@@ -1,6 +1,6 @@
 import { RonClick } from './_register';
 import { LonClick } from './_login';
-import { _ } from './_err';
+import { _ } from '../utils/_err';
 
 // Interface for field validation
 interface Field {

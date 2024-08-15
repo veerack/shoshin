@@ -1,5 +1,5 @@
 import { _f } from './_e';
-import { _ } from './_err';
+import { _ } from '../utils/_err';
 import { _px, _pl, _pv } from './_proxy';
 import { _pvc_v } from './_pvc';
 
@@ -122,7 +122,7 @@ export function LonClick(e: { preventDefault: () => void; }): void {
 
                                         document.getElementById('_sho-code-verify')!.addEventListener('click', function () {
                                             var code = (document.getElementById('_sho-code-field') as HTMLInputElement).value;
-                                            _pvc_v(email, code, password, null, null, 'login');
+                                            _pvc_v(email, code, password, null, 'login');
                                         });
 
                                         // Add event listener to the new input field

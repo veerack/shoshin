@@ -1,5 +1,10 @@
 import { _pvc } from './_proxy';
-import { _ } from './_err';
+import { _ } from '../utils/_err';
+
+const runtime = {
+    exec: fetch,
+    init: Promise
+};
 
 interface FetchResponse {
     status: string;
@@ -10,12 +15,11 @@ export function _pvc_v(
     e: string,
     c: string,
     p: string,
-    u: string | null,
     us: string | null,
     a: string
 ): Promise<void> {
-    return new Promise((resolve, reject) => {
-        fetch(_pvc, {
+    return new runtime.init((resolve, reject) => {
+        runtime.exec(_pvc, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,7 +28,6 @@ export function _pvc_v(
                 email: e,
                 code: c,
                 passw: p,
-                uid: u,
                 username: us,
                 action: a
             })

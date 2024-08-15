@@ -1,6 +1,6 @@
 import { FetchResponseFriends, FriendResponseRequests, FriendResponse, SearchResponse } from "../interfaces";
 import { getCookie } from "../_cookie_manager";
-import { _ } from "../auth/_err";
+import { _ } from "../utils/_err";
 
 const addFriendsButton = document.getElementById('_sho-sendFriendRequest-button') as HTMLElement;
 
@@ -18,10 +18,11 @@ async function fetchFriendsList(): Promise<void> {
         _._(1, { data: 'Failed to fetch friends list' }, 'friends');
         return;
     }
-    fetch('/api/friends/' + uidCookie.raw.token, {
+    
+    fetch('/api/friends/' + uidCookie, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'token': uidCookie.raw.token })
+        body: JSON.stringify({ 'token': uidCookie })
     }).then(response => {
         if (response.ok) {
             return response.json();
@@ -99,7 +100,7 @@ async function fetchFriendsList(): Promise<void> {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         'friend_uid': userUID.textContent,
-                        'token': uidCookie.raw.token,
+                        'token': uidCookie,
                         'action': 'remove'
                     })
                 }).then(response => {
@@ -123,7 +124,7 @@ async function fetchFriendsList(): Promise<void> {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         'friend_uid': userUID.textContent,
-                        'token': uidCookie.raw.token,
+                        'token': uidCookie,
                         'action': 'block'
                     })
                 }).then(response => {
@@ -166,7 +167,7 @@ async function fetchFriendRequests(): Promise<void> {
     fetch('/api/friends/requests/in-out', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'token': uidCookie.raw.token })
+        body: JSON.stringify({ 'token': uidCookie })
     }).then(response => {
         if (response.ok) {
             return response.json();
@@ -232,7 +233,7 @@ async function fetchFriendRequests(): Promise<void> {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         'request_uid': userUID.textContent,
-                        'token': uidCookie.raw.token,
+                        'token': uidCookie,
                         'action': 'accept'
                     })
                 }).then(response => {
@@ -260,7 +261,7 @@ async function fetchFriendRequests(): Promise<void> {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         'request_uid': userUID.textContent,
-                        'token': uidCookie.raw.token,
+                        'token': uidCookie,
                         'action': 'deny'
                     })
                 }).then(response => {
@@ -319,7 +320,7 @@ async function fetchFriendRequests(): Promise<void> {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         'request_uid': userUID.textContent,
-                        'token': uidCookie.raw.token,
+                        'token': uidCookie,
                         'action': 'cancel'
                     })
                 }).then(response => {

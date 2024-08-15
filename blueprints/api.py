@@ -5,12 +5,80 @@ import settings as _WebSettings
 import logging
 from utility import PIL
 from quart_cors import cors, route_cors
-from utility.methods import requires_valid_origin, SessionManager, requires_valid_session_token, cookie_check
-from utility.schemas import requires, SendRequestSchema, EnvSchema, UsernameSchema, SearchSchema, HandleFriendRequestSchema, HandleFriendsSchema, Token
+from utility.methods import requires_valid_origin, SessionManager, requires_valid_session_token, cookie_check, BucketCF
+from utility.schemas import requires, SendRequestSchema, EnvSchema, UsernameSchema, SearchSchema, HandleFriendRequestSchema, HandleFriendsSchema, Token, assetsSchema
 import json
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 log = logging.getLogger("hypercorn")
+log.setLevel(logging.INFO)
+
+@api_bp.route('/gateway/session/verify', methods=['POST'])
+@route_cors(allow_origin="https://gateway.shoshin.moe")
+@requires(Token)
+async def gt_verify_session():
+    """
+    Route made exclusively for the Gateway to verify session tokens.
+    No documentation needed.
+    """
+    data = await request.get_json()
+    token = data['token']
+    token = await SessionManager.parse_cookie(token)
+    user = await SessionManager.validate_token(token['raw']['token'])
+    if not user:
+        return jsonify({'status': 'error', 'payload': 'User not found'}), 400
+    return jsonify({'status': 'success', 'payload': int(user['uid'])})
+
+@api_bp.route('/assets/update', methods=['POST'])
+@route_cors(allow_origin="https://beta.shoshin.moe")
+@requires_valid_origin
+@requires(assetsSchema)
+async def update_assets(data):
+    """Update the user's assets.
+
+    Request JSON
+    ------------
+    token : str
+        The session token of the user.
+    assets : dict
+        The assets to update.
+    type: str
+        The type of asset to update.
+
+    Returns
+    -------
+    200 OK
+    ---------
+    status : str
+        The status of the update process.
+    payload : str
+        The result of the update process.
+
+    400 Bad Request
+    ---------------
+    status : str
+        The status of the update process.
+    payload : str
+        The error message.
+    """
+    token = data.token
+    file64 = data.file
+    action_type = data.type
+
+    # Strip the prefix from the base64 string if it exists
+    if "," in file64:
+        file64 = file64.split(",")[1]
+
+    _pt = SessionManager.parse_cookie(token)
+    user = await SessionManager.validate_token(_pt['raw']['token'])
+
+    if not user:
+        return jsonify({'status': 'error', 'payload': 'User not found'})
+
+    if action_type == 'avatar':
+        return await BucketCF.update(file64, 'avatar', user['uid'])
+    elif action_type == 'banner':
+        return await BucketCF.update(file64, 'banner', user['uid'])
 
 @api_bp.route('/friends/search', methods=['POST'])
 @route_cors(allow_origin="https://beta.shoshin.moe")
@@ -55,7 +123,8 @@ async def search_user(data):
     token = data.token
     search = data.search
 
-    user = await SessionManager.validate_token(token)
+    _pt = SessionManager.parse_cookie(token)
+    user = await SessionManager.validate_token(_pt['raw']['token'])
     if not user:
         return jsonify({'status': 'error', 'payload': 'User not found'}), 400
 
@@ -125,7 +194,8 @@ async def send_friend_request(data):
     token = data.token
     friend_id = data.friend_id
 
-    user = await SessionManager.validate_token(token)
+    _pt = SessionManager.parse_cookie(token)
+    user = await SessionManager.validate_token(_pt['raw']['token'])
 
     friend = await current_app.pool.fetchrow('SELECT * FROM users WHERE uid=$1', int(friend_id))
 
@@ -221,7 +291,8 @@ async def handle_friend_request(data):
 
     log.info(f"Data: {data}")
 
-    user = await SessionManager.validate_token(token)
+    _pt = SessionManager.parse_cookie(token)
+    user = await SessionManager.validate_token(_pt['raw']['token'])
     friend = await current_app.pool.fetchrow('SELECT friends FROM users WHERE uid=$1', int(request_uid))
 
     log.info(f"Searching {request_uid} in {json.loads(user['friends'])['requests']}")
@@ -295,7 +366,8 @@ async def friends_list(token):
     payload : str
         The error message.
     """
-    user = await SessionManager.validate_token(token)
+    _pt = SessionManager.parse_cookie(token)
+    user = await SessionManager.validate_token(_pt['raw']['token'])
 
     if not user:
         return jsonify({'status': 'error', 'payload': 'User not found'}), 400
@@ -365,7 +437,8 @@ async def friends_requests(data):
     """
     token = data.token
 
-    user = await SessionManager.validate_token(token)
+    _pt = SessionManager.parse_cookie(token)
+    user = await SessionManager.validate_token(_pt['raw']['token'])
 
     if user.get('friends'):
         friends = json.loads(user['friends'])
@@ -433,7 +506,8 @@ async def handle_friends(data):
     action = data.action
     friend_id = data.friend_uid
 
-    user = await SessionManager.validate_token(token)
+    _pt = SessionManager.parse_cookie(token)
+    user = await SessionManager.validate_token(_pt['raw']['token'])
     friend = await current_app.pool.fetchrow('SELECT friends FROM users WHERE uid=$1', int(friend_id))
 
     if not user or not friend:

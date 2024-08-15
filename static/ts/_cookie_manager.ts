@@ -1,5 +1,5 @@
 import { _ck } from './auth/_proxy';
-import { _ } from './auth/_err';
+import { _ } from './utils/_err';
 
 const gc = _ck + 'getcookie';
 const ec = _ck + 'erasecookie';

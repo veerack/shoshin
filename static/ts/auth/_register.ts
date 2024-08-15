@@ -50,7 +50,6 @@ export function RonClick(e: Event): void {
 
                 const email = (document.getElementById('_sho-email-field') as HTMLInputElement).value;
                 const password = (document.getElementById('_sho-password-field') as HTMLInputElement).value;
-                const uid = (document.getElementById('_sho-uid-field') as HTMLInputElement).value;
                 const username = (document.getElementById('_sho-username-field') as HTMLInputElement).value;
 
                 const response2 = await fetch(_pl, {
@@ -124,7 +123,7 @@ export function RonClick(e: Event): void {
 
                         document.getElementById('_sho-code-verify')!.addEventListener('click', function () {
                             const code = (document.getElementById('_sho-code-field') as HTMLInputElement).value;
-                            _pvc_v(email, code, password, uid, username, 'register');
+                            _pvc_v(email, code, password, username, 'register');
                         });
 
                         const inputField = document.getElementById('_sho-code-field') as HTMLInputElement;

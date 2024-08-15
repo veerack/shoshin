@@ -10,11 +10,26 @@ from functools import wraps
 import logging
 import re
 import settings as _WebSettings
+import aioboto3
+import tempfile
+import io
+import settings
+import string
+import random
+from PIL import Image
 
 log = logging.getLogger("hypercorn")
 log.setLevel(logging.INFO)
 
 secret_key = 'your-secret-key'  # Store this securely, e.g., in environment variables
+
+def generate_random_string(length=16):
+    """
+    Generate a random string of the specified length using uppercase, lowercase letters, and digits.
+    """
+    characters = string.ascii_letters + string.digits  # Includes uppercase, lowercase letters, and digits
+    random_string = ''.join(random.choice(characters) for _ in range(length))
+    return random_string
 
 def parse_docstring(docstring):
     """
@@ -140,6 +155,171 @@ def register_routes_with_spec(app, spec, blueprint: list):
 
                 # Log the updated spec
                 log.info(f"[DOCS] API Paths Updated. Total paths: {len(spec._paths)}")
+
+class BucketCF:
+    """
+    A class to manage the file uploads over the R2 Cloudflare Bucket.
+    The standard R2 Cloudflare URL for this site is https://cdn.shoshin.moe.
+
+    Attributes
+    ----------
+    cdn : str
+        The URL of the R2 Cloudflare Bucket.
+    bucket_upload_url : str
+        The URL to upload files to the R2 Cloudflare Bucket.
+    bucket_download_url : str
+        The URL to download files from the R2 Cloudflare Bucket
+    """
+    def __init__(self):
+        self.cdn = "https://cdn.shoshin.moe"
+        self.bucket_upload_url = f"{self.bucket_url}/upload"
+        self.bucket_download_url = f"{self.bucket_url}/download"
+
+    @staticmethod
+    async def verify_file(file):
+        """
+        Verify the file to ensure that it is a valid image file.
+        The file is encoded in base64 format when received, so it needs to be decoded before verification.
+
+        The verification process is the following:
+        1. Decode the base64-encoded file.
+        2. Check if the file is a valid image file.
+        3. Check if the file size is within the allowed limits.
+        4. Check if the file format is supported.
+        5. Check if the file is not empty.
+
+        Parameters
+        ----------
+        file : werkzeug.datastructures.FileStorage
+            The file to verify.
+
+        Returns
+        -------
+        dict
+            A dictionary containing the status of the verification and the error message if the verification fails.
+        """
+        # Decode the base64-encoded file
+        file = base64.b64decode(file)
+
+        # Check if the file is a valid image file
+        try:
+            image = Image.open(io.BytesIO(file))
+            image.verify()
+        except Exception as e:
+            return {"status": False, "message": "Invalid image file."}
+
+        # Check if the file size is within the allowed limits (# 10 MB)
+        if len(file) > 10 * 1024 * 1024:
+            return {"status": False, "message": "File size exceeds the limit of 10 MB."}
+        
+        # Check if the file format is supported
+        if image.format not in ["JPEG", "PNG", "GIF"]:
+            return {"status": False, "message": "Unsupported image format."}
+        
+        # Check if the file is not empty
+        if len(file) == 0:
+            return {"status": False, "message": "Empty file."}
+        
+        return {"status": True, "message": "File verification successful."}
+    
+    @staticmethod
+    async def update(file: base64, type: str, uid: int):
+        """
+        Upload a file to the R2 Cloudflare Bucket.
+
+        Parameters
+        ----------
+        file : base64
+            The file to upload in base64 format.
+        type : str
+            The type of asset to update (avatar or banner).
+        uid : str
+            The UID of the user uploading the file.
+
+        Returns
+        -------
+        dict
+            A dictionary containing the status of the upload and the URL of the uploaded file.
+        """
+        # Verify the file before uploading
+        vr = await BucketCF.verify_file(file)
+
+        # If verification returns False (i.e., the file is invalid), return the verification result
+        if not vr["status"]:
+            return jsonify(vr)
+
+        file = base64.b64decode(file)
+
+        # Write the file data to a temporary file
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            temp_file.write(file)
+            temp_file_path = temp_file.name
+
+        _s3 = aioboto3.Session(
+            aws_access_key_id=settings.CF_ACCESS_KEY,
+            aws_secret_access_key=settings.CF_SECRET_KEY,
+        )
+        
+        _file_url = None
+        name_ = generate_random_string()
+
+        app = current_app
+
+        if type == "avatar":
+            async with _s3.client('s3', endpoint_url='https://980a51450a94985d4207be762678dac1.r2.cloudflarestorage.com', region_name='auto') as s3:
+                _verify_ex = await app.session.get(f"https://cdn.shoshin.moe/assets/{uid}/avatar/{name_}")
+                if not _verify_ex.status == 200:
+                    try:
+                        await s3.upload_file(
+                            Filename=temp_file_path,
+                            Bucket="shoshin",
+                            Key=f"assets/{uid}/avatar/{name_}",
+                            ExtraArgs={
+                                'ContentType': "image/png",  # Set the content type
+                                'ContentDisposition': 'inline',  # Set the content disposition,
+                                'ACL': 'public-read'
+                            },
+                        )
+
+                        # Generate a presigned URL for the uploaded file
+                        _file_url = f"https://cdn.shoshin.moe/assets/{uid}/avatar/{name_}"
+                    except Exception as e:
+                        log.info(f'Exception in R2: {e}')
+                        return jsonify({"status": False, "payload": {"message": "Failed to update avatar."}})
+                else:
+                    _file_url = f"https://cdn.shoshin.moe/assets/{uid}/avatar/{name_}"
+
+            log.info(f"[SUCCESS] Generated image and uploaded to CDN: {_file_url}")
+            await app.pool.execute("UPDATE users SET avatar = $1 WHERE uid = $2", _file_url, uid)
+            return jsonify({"status": True, "payload": {"url": _file_url, "message": "Avatar Updated!"}})
+        
+        elif type == "banner":
+            async with _s3.client('s3', endpoint_url='https://980a51450a94985d4207be762678dac1.r2.cloudflarestorage.com', region_name='auto') as s3:
+                _verify_ex = await app.session.get(f"https://cdn.shoshin.moe/assets/{uid}/banner/{name_}")
+                if not _verify_ex.status == 200:
+                    try:
+                        await s3.upload_file(
+                            Filename=temp_file_path,
+                            Bucket="shoshin",
+                            Key=f"assets/{uid}/banner/{name_}",
+                            ExtraArgs={
+                                'ContentType': "image/png",  # Set the content type
+                                'ContentDisposition': 'inline',  # Set the content disposition,
+                                'ACL': 'public-read'
+                            },
+                        )
+
+                        # Generate a presigned URL for the uploaded file
+                        _file_url = f"https://cdn.shoshin.moe/assets/{uid}/banner/{name_}"
+                    except Exception as e:
+                        log.info(f'Exception in R2: {e}')
+                        return jsonify({"status": False, "payload": {"message": "Failed to update banner."}})
+                else:
+                    _file_url = f"https://cdn.shoshin.moe/assets/{uid}/banner/{name_}"
+
+            log.info(f"[SUCCESS] Generated image and uploaded to CDN: {_file_url}")
+            await app.pool.execute("UPDATE users SET banner = $1 WHERE uid = $2", _file_url, uid)
+            return jsonify({"status": True, "payload": {"url": _file_url, "message": "Banner Updated!"}})
 
 class SnowflakeIDGenerator:
     """
