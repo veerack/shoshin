@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" content="#ffffff"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Shoshin.moe | DMs</title>
+    <meta name="description" content="Connect with fellow gamers, share your experiences, and stay updated with the latest gaming news from other gamers like you. Join our community today!"/>
+    <meta name="keywords" content="Wuthering Waves, character build, generator, image, wuwa"/>
+    <meta name="author" content="shoshin.moe" />
+    <meta name='og:title' content='Shoshin.moe'>
+    <meta name='og:url' content='https://shoshin.moe/u/{{ uid }}/dms'>
+    <meta name='og:image' content='../static/assets/favicon.png'>
+    <meta name='og:site_name' content='shoshin.moe'>
+    <meta name='og:description' content="Connect with fellow gamers, share your experiences, and stay updated with the latest gaming news from other gamers like you. Join our community today!">
+    <meta property="og:image" content="https://shoshin.moe/static/assets/favicon.png"/>
+    <meta name='language' content='EN'>
+    <meta name='url' content='https://beta.shoshin.moe'>
+    <link rel="icon" href="../static/assets/favicon.png"/>
+    <link rel="stylesheet" href="../../static/css/output.css">
+    <script src="../../static/js/socket/_connector.js"></script>
+    <script src="../../static/js/dms/dms.js"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body class="basic-font">
+    <div class="grid grid-cols-[theme(spacing.64)_1fr] grid-rows-[auto_1fr] h-screen overflow-hidden">
+        {% include 'dms/_navbar.html' %}
+        {% include 'dms/_sidebar.html' %}
+        {% include 'dms/_chatbox.html' %}
+    </div>
+</body>
+</html>

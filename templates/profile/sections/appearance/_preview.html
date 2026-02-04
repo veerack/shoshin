@@ -1,0 +1,88 @@
+<div class="flex flex-col gap-4 w-4/5 mx-auto mt-4">
+    <h2 class="text-white font-bold text-2xl">Preview Mode</h2>
+    <button id="preview-changes-button" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md">Preview Changes</button>
+</div>
+
+<!-- Preview Area -->
+<div class="flex flex-col gap-4 w-4/5 mx-auto mt-4">
+    <h2 class="text-white font-bold text-2xl">Preview Area</h2>
+    <p class="text-gray-300 font-normal text-sm">This is a preview of how your profile will look like with the changes you've made. Click the "Preview Changes" button to update the preview.</p>
+    <div id="preview-area" class="p-0 md:p-4 rounded-md bg-gray-800 text-white">
+        <div class="p-0 md:p-2 rounded-md bg-gray-800/30 w-full h-auto">
+            <div id="shoshin-profile" class="flex flex-col gap-4 border-green-400 border-2 rounded-md w-full md:w-1/2 mx-auto bg-gray-900 pb-4">
+                <div class="preview relative h-[300px]">
+                    <img src="{{ data['banner'] if data['banner'] else 'https://beta.shoshin.moe/static/assets/default_banner.png'}}" class="absolute inset-0 w-full h-full object-cover object-top bg-no-repeat border-b-8 border-gray-900">
+                    
+                    <div class="h-56 relative">
+                        <div class="absolute -bottom-32 left-8 m-auto w-36 h-36 flex items-center justify-center">
+                            <div class="relative w-32 h-32 flex items-center justify-center">
+                                <img id="avatar" src="{{ data['avatar'] if data['avatar'] else 'https://beta.shoshin.moe/static/assets/default_avatar.png'}}" class="w-full h-full object-cover rounded-full z-10 border-r-8 border-t-8 border-l-8 border-b-8 border-gray-900 border-b-green-500">
+                            </div>
+                            <img id="avatar-effect" src="" class="absolute inset-0 w-full h-full rounded-full z-20 object-cover" style="display: block;">
+                        </div>
+                    </div>
+                </div>
+                {% if achievements['owned'] | length > 0 %}
+                    <div id="shoshin-section-achievements" class="ml-auto flex flex-row gap-0 mr-4 bg-black/30 outline-1 outline-none outline-gray-500 rounded-md">
+                    {% for achievement in achievements['owned'] %}
+                        <img src="{{ achievement['icon'] }}" class="w-10 h-auto">
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="flex flex-col gap-1 ml-8 mt-4">
+                    <p id="shoshin-username" class="text-white font-semibold text-2xl">{{ data['username'] }}</p>
+                    <p id="shoshin-id" class="text-gray-300 font-normal text-sm">ID: {{ data['uid'] }}</p>
+                    <p id="shoshin-description" class="text-white font-normal text-md mt-4">{{ data['bio'] if data['bio'] else 'Your very nice bio is here! ^^' }}</p>
+                </div>
+                <hr class="h-px w-auto bg-gray-200 border-0 mx-8">
+                <div class="ml-8 mr-8 flex flex-row justify-between px-32">
+                    <div class="flex flex-row gap-1 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                            <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                            <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z"/>
+                        </svg>
+                        <p id="shoshin-section-posts-text" class="text-gray-300 text-xl">Posts</p>
+                    </div>
+                    <div class="flex flex-row gap-1 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-joystick" viewBox="0 0 16 16">
+                            <path d="M10 2a2 2 0 0 1-1.5 1.937v5.087c.863.083 1.5.377 1.5.726 0 .414-.895.75-2 .75s-2-.336-2-.75c0-.35.637-.643 1.5-.726V3.937A2 2 0 1 1 10 2"/>
+                            <path d="M0 9.665v1.717a1 1 0 0 0 .553.894l6.553 3.277a2 2 0 0 0 1.788 0l6.553-3.277a1 1 0 0 0 .553-.894V9.665c0-.1-.06-.19-.152-.23L9.5 6.715v.993l5.227 2.178a.125.125 0 0 1 .001.23l-5.94 2.546a2 2 0 0 1-1.576 0l-5.94-2.546a.125.125 0 0 1 .001-.23L6.5 7.708l-.013-.988L.152 9.435a.25.25 0 0 0-.152.23"/>
+                        </svg>
+                        <p id="shoshin-section-builds-text" class="text-gray-300 text-xl">Builds</p>
+                    </div>
+                    <div class="flex flex-row gap-1 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-up" viewBox="0 0 16 16">
+                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.354-5.854 1.5 1.5a.5.5 0 0 1-.708.708L13 11.707V14.5a.5.5 0 0 1-1 0v-2.793l-.646.647a.5.5 0 0 1-.708-.708l1.5-1.5a.5.5 0 0 1 .708 0M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                            <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                        </svg>
+                        <p id="shoshin-section-mentions-text" class="text-gray-300 text-xl">Mentions</p>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 ml-8 mr-8">
+                    <div class="flex flex-row gap-2 items-center">
+                        <img id="shoshin-post-image" src='https://beta.shoshin.moe/static/assets/default_avatar.png' class='w-6 rounded-full'>
+                        <p id="shoshin-post-author" class="text-white font-semibold text-sm">{{ data['username'] }}</p>
+                    </div>
+                    <div id="shoshin-post-image" class="bg-gray-500/50 rounded-md w-full h-64"></div>
+                    <div id="shoshin-post-body" class="flex flex-row gap-4 items-center">
+                        <div class="flex flex-row gap-1 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                            </svg>
+                            <p id="shoshin-post-likes" class="text-white font-normal text-md ml-1 mb-1">1038</p>
+                        </div>
+                        <div class="flex flex-row gap-1 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-square" viewBox="0 0 16 16">
+                            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                            </svg>
+                            <p id="shoshin-post-comments" class="text-white font-normal text-md ml-1 mb-1">104</p>
+                        </div>
+                    </div>
+                    <p id="shoshin-post-description" class="text-gray-300 font-normal text-sm">Post description here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>

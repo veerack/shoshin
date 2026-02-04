@@ -1,33 +1,40 @@
-# This file is the main file for the web server. It handles all the routes and the main server setup.
-import re
 import aiohttp
-from flask import redirect
-from quart import Quart, request, session, render_template, jsonify, Response
+from quart import Quart, redirect, request, session, render_template, jsonify, Response, url_for
 import settings as _WebSettings
 import asyncpg
 import datetime
 import logging
-import colorlog
-import json
 from quartcord import DiscordOAuth2Session
-from utility import PIL
 import sentry_sdk
 from sentry_sdk.integrations.quart import QuartIntegration
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
-from utility.grecaptcha import create_assessment
+from blueprints.api import api_bp
+from blueprints.auth import auth_bp
+from blueprints.captchag import captcha_bp
+from blueprints.cookies import cookies_bp
+import json
+from utility.methods import requires_valid_session_token, fetch_achievements, require_api_key, register_routes_with_spec, SessionManager, cookie_check
+import base64
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+
+# Initialize APISpec
+spec = APISpec(
+    title="Shoshin API",
+    version="1.0.0",
+    openapi_version="3.0.2",
+    plugins=[MarshmallowPlugin()],
+)
 
 sentry_sdk.init(
     dsn=_WebSettings.SENTRY_DSN,
     integrations=[QuartIntegration()],
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
     traces_sample_rate=1.0,
-    # Set profiles_sample_rate to 1.0 to profile 100%
-    # of sampled transactions.
-    # We recommend adjusting this value in production.
     profiles_sample_rate=1.0,
 )
+
+def format_datetime(value, format='%d %b %Y, %I:%M %p'):
+    """Format a timestamp to a readable date."""
+    return datetime.datetime.fromtimestamp(value).strftime(format)
 
 async def get_patrons():
     url = 'https://www.patreon.com/api/oauth2/v2/campaigns/6344774/members'
@@ -54,46 +61,32 @@ class WebQuart(Quart):
 
     async def get_pool(self) -> asyncpg.Pool:
         return self.pool
-    
-app = WebQuart(__name__, static_folder="./static")
 
+app = WebQuart(__name__, static_folder="./static")
 app.secret_key = b"random bytes representing quart secret key"
 
 log = logging.getLogger("hypercorn")
 log.setLevel(logging.INFO)
 
 handler = logging.StreamHandler()
-handler.setFormatter(
-    colorlog.ColoredFormatter(
-        "[APP] %(log_color)s%(message)s",
-        log_colors={
-            "DEBUG": "cyan",
-            "INFO": "green",
-            "WARNING": "yellow",
-            "ERROR": "red",
-            "CRITICAL": "red,bg_white",
-        },
-    )
-)
-
 log.addHandler(handler)
 
-app.config["DISCORD_CLIENT_ID"] = _WebSettings.DISCORD_CLIENT_ID  # Discord client ID.
-app.config["DISCORD_CLIENT_SECRET"] = (
-    _WebSettings.DISCORD_CLIENT_SECRET
-)  # Discord client secret.
-app.config["DISCORD_REDIRECT_URI"] = (
-    _WebSettings.DISCORD_REDIRECT_URI
-)  # URL to your callback endpoint.
-app.config["DISCORD_BOT_TOKEN"] = _WebSettings.DISCORD_TOKEN
-
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB
+app.jinja_env.filters['datetime'] = format_datetime
+
+# Register blueprints
+app.register_blueprint(api_bp)
+app.register_blueprint(auth_bp)
+app.register_blueprint(captcha_bp)
+app.register_blueprint(cookies_bp)
 
 @app.before_serving
 async def startup():
     app.pool = await asyncpg.create_pool(_WebSettings.DB)
-    log.info(f"[DATABASE] Connected: {app.pool}")
+    print(f"[DATABASE] Connected: {app.pool}")
     app.session = aiohttp.ClientSession()
+    app.spec = spec
+    register_routes_with_spec(app, app.spec, [api_bp, auth_bp])
 
 @app.before_request
 def make_session_permanent():
@@ -123,42 +116,6 @@ async def proxy():
         app.logger.error(f"Error occurred: {str(e)}")
         return Response(f"Error occurred: {str(e)}", status=500)
 
-@app.route("/api/generate_build", methods=["POST"])
-async def gen_build():
-    user_agent = request.headers.get('User-Agent').lower()  # Retrieve the User-Agent header and convert to lowercase for easier matching
-
-    # Check if the User-Agent indicates a mobile device
-    if 'windows' in user_agent:
-        device_type = 'desktop'
-    else:
-        device_type = 'mobile'
-
-    # Get files from request
-    files = await request.files
-    # Get the confirmPayload from the form data
-    form = await request.form
-    confirm_payload = form.get('confirmPayload')
-
-    if confirm_payload:
-        data = True
-    else:
-        data = False
-
-    if data:
-        log.info(f"[INFO] Received data: {data}")
-
-    result = await PIL.process_images(
-        files,
-        app,
-        is_mobile=True if device_type == 'mobile' else False,
-        is_rover=True if data else False
-    )
-
-    try:
-        return jsonify(result)
-    except Exception as e:
-        return result
-    
 @app.route("/privacy")
 async def privacy():
     return await render_template("legal/privacy.html")
@@ -167,12 +124,16 @@ async def privacy():
 async def terms():
     return await render_template("legal/terms.html")
 
+@app.route("/guidelines")
+async def cguidelines():
+    return await render_template("legal/cguidelines.html")
+
 @app.route("/wuwa/news/publish", methods=["POST"])
 async def wuwanews():
     data = await request.get_json()
     if not data:
         return {"status": "error", "message": "No data provided."}
-    
+
     _must_have = [
         "title",
         "content",
@@ -195,46 +156,79 @@ async def home():
     return await render_template(f"wuwagen.html", news_entry=news_entry)
 
 @app.route("/login")
+@cookie_check(cookie_name="_sho-session", red='view_profile')
 async def login():
     return await render_template("auth/auth.html")
 
 @app.route("/register")
+@cookie_check(cookie_name="_sho-session", red='view_profile')
 async def register():
     return await render_template("auth/register.html")
 
-@app.route("/mailtest")
-async def mailtest():
+@app.route("/profile/manage")
+@requires_valid_session_token
+async def view_profile(data):
+    print(data)
+    _un = fetch_achievements([json.loads(ach) for ach in data['achievements']])
 
-    message = Mail(
-        from_email='helpdesk@shoshin.moe',
-        to_emails='pistolamario0@gmail.com',
-        subject='Testing Again.',
-        html_content='<strong>and easy to do anywhere, even with Python</strong>')
-    try:
-        sg = SendGridAPIClient(_WebSettings.SENDGRID_API_KEY)
-        response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
-        return {"status": "success", "payload": "Email sent"}
-    except Exception as e:
-        print(e.message)
-        return {"status": "error", "payload": "Email not sent", "error": e}
-    
-@app.route("/captcha/google/recaptcha/verify", methods=["POST"])
-async def verify_recaptcha():
-    data = await request.get_json()
-    if not data:
-        return {"status": "error", "message": "No data provided."}
+    _fr = []
 
-    if not all([x in data for x in ["token", "action"]]):
-        return {"status": "error", "message": "Missing required fields: token, action"}
+    if data['friends']:
+        _f = json.loads(data['friends'])
+        if len(_f['accepted']) > 0:
+            for d in _f['accepted']:
+                friend_data = await app.pool.fetchrow("SELECT * FROM users WHERE uid = $1", d['uid'])
+                _fr.append(friend_data)
 
-    assessment = await create_assessment(
-        _WebSettings.RECAPTCHA_PROJECT_ID,
-        _WebSettings.RECAPTCHA_KEY,
-        data["token"],
-        data["action"]
-    )
+    print(_fr)
 
-    return {"status": "success", "payload": assessment}
+    return await render_template("profile/account.html", data=data, achievements=_un, friends=_fr)
+
+@app.route("/messages")
+@cookie_check(cookie_name="_sho-session", red='no_redirect')
+@requires_valid_session_token
+async def dms(data):
+    _fr = []
+
+    if data['friends']:
+        _f = json.loads(data['friends'])
+        if len(_f['accepted']) > 0:
+            for d in _f['accepted']:
+                friend_data = await app.pool.fetchrow("SELECT * FROM users WHERE uid = $1", d['uid'])
+                _fr.append(friend_data)
+
+    # Fetch messages between the current user (uid) and all friends
+    messages = []
+    if len(_fr) > 0:
+        for friend in _fr:
+            friend_uid = friend['uid']
+            # Fetch messages between current user and this friend
+            msgs = await app.pool.fetch(
+                """
+                SELECT * FROM messages
+                WHERE (sender_uid = $1 AND receiver_uid = $2)
+                   OR (sender_uid = $2 AND receiver_uid = $1)
+                ORDER BY sent_at ASC;
+                """,
+                data['uid'], friend_uid
+            )
+            messages.append({
+                'friend_uid': friend_uid,
+                'messages': dict(msgs)
+            })
+
+    #log.info(f"Messages between {uid} and {friend_uid}: {messages}")
+
+    return await render_template("dms/dm.html", data=data, uid=data['uid'], friends=_fr, messages=messages)
+
+# Filter only specific routes for documentation
+@app.route('/openapi.json')
+async def openapi_json():
+    paths = {k: v for k, v in spec.to_dict()["paths"].items() if k.startswith(('/api', '/auth'))}
+    return jsonify({**spec.to_dict(), "paths": paths})
+
+# Serve the custom documentation page
+@app.route('/docs')
+@require_api_key
+async def docs():
+    return await render_template('docs.html')

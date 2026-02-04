@@ -1,0 +1,81 @@
+<div id="_sho-mng-div-friends" class="bg-[#191f22] overflow-y-scroll w-screen md:w-full">
+    <div class="flex flex-col gap-8 p-4 items-center justify-center">
+        <div class="flex flex-col gap-4 w-full md:w-4/5">
+            <h1 class="text-white font-bold text-4xl mt-8">Manage Friends</h1>
+            <p class="text-gray-300 font-normal text-sm md:text-md">Manage your current friends, in-out requests and blocked users, all here.</p>
+        </div>
+        <div class="bg-[#FFEA00]/40 p-2 h-16 flex items-center my-4 border-l-4 border-l-yellow-500 w-full md:w-4/5">
+            <div class="flex flex-row gap-2 items-center ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="yellow" class="bi bi-info-circle" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                </svg>
+                <p class="text-white text-sm font-normal">Adding someone as a friend provides you with the flexibility to maintain a private profile. This ensures your personal information and posts are only accessible to those you've accepted as friends, while remaining invisible to others.</p>
+            </div>
+        </div>
+        <div class="w-full md:w-4/5 h-full rounded-t-md relative">
+            <div class="flex flex-row gap-2 items-center p-4 bg-transparent border border-orange-500 rounded-sm relative">
+                <div class="flex flex-row items-center w-full">
+                    <div class="flex flex-row items-center text-nowrap">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" class="bi bi-people-fill" viewBox="0 0 16 16">
+                            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                        </svg>
+                        <p class="text-white font-medium text-2xl ml-2">{{ friends | count if friends | count > 0 else 0}} Friends</p>
+                    </div>
+                    <hr class="h-10 w-px bg-gray-200 border-0 mx-6">
+                    <div class="flex flex-row gap-7 w-full">
+                        <p id="_sho-currentFriendsButton" class="text-gray-300 font-medium text-lg hover:bg-gray-700/30 rounded-md px-2 py-1 hover:cursor-pointer bg-gray-700/30">My Friends</p>
+                        <p id="_sho-requestInOutButton" class="text-gray-300 font-medium text-lg hover:bg-gray-700/30 rounded-md px-2 py-1 hover:cursor-pointer">Requests</p>
+                        <p id="_sho-blockedFriendsButton" class="text-gray-300 font-medium text-lg hover:bg-gray-700/30 rounded-md px-2 py-1 hover:cursor-pointer">Blocked</p>
+                        <p id="_sho-sendFriendRequest-button" class="text-white font-medium text-lg bg-orange-600 px-2 py-1 rounded-md transition duration-150 ease-out hover:bg-orange-700 hover:cursor-pointer ml-auto mr-4">Send Friend Request</p>
+                        <div id="shoshin-friends-popup" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] z-10 bg-white/10 backdrop-blur-sm w-1/2 rounded-md overflow-auto hidden">
+                            <div class="flex flex-col gap-2 m-4">
+                                <div class="h-12 bg-[#191f22] rounded-md relative">
+                                    <div class="flex flex-row items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-search ml-4 translate-y-1/2" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                        <input id="_sho-friendSearchInput" class="text-white font-semibold ml-4 w-full bg-transparent translate-y-1/2 border-none outline-none" placeholder="Paste their UID here or search by Username!"/>
+                                    </div>
+                                </div>
+                                <div id="shoshin-friends-found" class="flex flex-col gap-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#F97316" class="bi bi-circle-fill absolute translate-y-1/2 bottom-0 left-1/2 z-10" viewBox="0 0 16 16">
+                    <circle cx="8" cy="8" r="8"/>
+                </svg>
+            </div>
+            <div class="flex justify-center">
+                <hr class="h-32 w-1 my-8 bg-orange-500 ml-5 mt-0 mb-0">
+            </div>
+            <div class="bg-transparent border border-orange-500 h-auto max-h-[600px] relative w-full rounded-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#F97316" class="bi bi-circle-fill absolute -translate-y-1/2 top-0 left-1/2 z-10" viewBox="0 0 16 16">
+                    <circle cx="8" cy="8" r="8"/>
+                </svg>
+                <div class="h-auto w-auto rounded-md relative m-4 p-2 bg-gray-700 focus-within:outline outline-orange-500 outline-1 group/search">
+                    <div class="flex flex-row items-center p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-search ml-1 group-focus-within/search:fill-orange-500" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                        <input id="_sho-friendSearchInputList" class="text-white font-semibold ml-4 w-full bg-transparent border-none outline-none" placeholder="Search a friend within your friend list by their UID or Username.."/>
+                    </div>
+                </div>
+                <div class="flex flex-row gap-2 items-center bg-gray-800 rounded-sm focus:border border-orange-500"></div>
+                <div id="_sho-acceptedFriendsDiv" class="flex flex-col">
+                    <!-- For loop using Jinja2 thru their friend list -->
+                    <img src="https://beta.shoshin.moe/static/assets/nofriends.png" class="w-1/2 mx-auto mb-2">
+                </div>
+                <div id="_sho-friendRequestsDiv" class="flex flex-col gap-2 hidden">
+                    <!-- For loop using Jinja2 thru their friend list -->
+                    <img src="https://beta.shoshin.moe/static/assets/no_friends.png" class="w-1/3 mx-auto">
+                </div>
+                <div id="_sho-blockedFriendsDiv" class="flex flex-col gap-2 hidden">
+                    <!-- For loop using Jinja2 thru their friend list -->
+                    <img src="https://beta.shoshin.moe/static/assets/no_friends.png" class="w-1/3 mx-auto">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

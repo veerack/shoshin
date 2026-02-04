@@ -1,0 +1,36 @@
+<div class="flex flex-col gap-4 w-4/5 mx-auto mt-8">
+    <h2 class="text-white font-bold text-2xl">Custom CSS</h2>
+    <div class="flex flex-col gap-1">
+        <div class="flex flex-row gap-2 items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-code-square" viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                <path d="M6.854 4.646a.5.5 0 0 1 0 .708L4.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0m2.292 0a.5.5 0 0 0 0 .708L11.793 8l-2.647 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0"/>
+            </svg>
+            <p class="text-gray-300 font-normal text-sm">This is intended for advanced users who are familiar with CSS. Please be careful with your custom CSS as it may break the layout of your profile.</p>
+        </div>
+    </div>
+    <textarea id="custom-css-input" class="hidden" rows="10">
+/* Add your custom CSS here. To prevent layout-breaking issues, styles cannot be applied to the body, only to specific elements. */
+/* IDs are all prefixed with "shoshin-", see examples below. */
+
+/* Example 1: Change the background color of the page. If you have a custom background selected, this won't work. */
+#shoshin-profile {
+background-color: #1f2b30;
+}
+
+/* Example 2: Change the color of your username text */
+#shoshin-username {
+color: #ffffff;
+}
+
+/* Example 3: Change the color of the profile description */
+#shoshin-description {
+color: #ffffff;
+}
+
+/* Example 4: Change the color of the profile links */
+#shoshin-links {
+color: #ffffff;
+}
+    </textarea>
+</div>

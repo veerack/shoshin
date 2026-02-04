@@ -1,0 +1,53 @@
+<div id="_sho-mng-div-achievements" class="bg-[#191f22] overflow-y-scroll w-screen md:w-full">
+    <div class="flex flex-col gap-8 p-0 md:p-4 items-center justify-center">
+        <div class="flex flex-col gap-4 w-4/5">
+            <h1 class="text-white font-bold text-4xl w-4/5 mt-8">Your Achievements</h1>
+            <p class="text-gray-300 font-normal text-sm">Here you can see all the achievements you've unlocked on the platform. Keep up the good work!</p>
+        </div>
+        <p class="text-white font-bold text-md underline underline-offset-4 decoration-4 decoration-white w-4/5">Achievements Unlocked</p>
+        <div class="w-4/5 gap-16 rounded-md relative">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-x-2 gap-y-6">
+                {% for ach in achievements['owned'] %}
+                <div class="relative flex flex-col items-center bg-green-900 p-4 rounded-md">
+                    <p class="text-white font-medium text-2xl mb-4">{{ ach['name'] }}</p>
+                    <hr class="border-2 rounded-full glow absolute top-9 md:top-10 translate-y-1/2 w-[90px] h-[90px]">
+                    <img src="{{ ach['icon'] }}" class="w-32 h-auto z-10 border-2 rounded-full">
+                    <div class="flex flex-col gap-2 mt-4">
+                      <p class="text-gray-300 font-normal text-sm text-center">{{ ach['description'] }}</p>
+                      <p class="text-white font-bold text-xs text-center">Unlocked at {{ ach['time'] | datetime }}</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bookmark-check-fill absolute right-2 top-0 text-white" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                    </svg>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr class="h-px w-4/5 bg-gray-200 border-0 mx-4 mb-6 mt-6">
+        <p class="text-white font-bold text-md underline underline-offset-4 decoration-4 decoration-white w-4/5">Achievements Locked</p>
+        <div class="w-4/5 gap-16 rounded-md relative">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-x-2 gap-y-6">
+                {% for ach in achievements['not_owned'] %}
+                <div class="relative flex flex-col items-center bg-red-900 p-4 rounded-md">
+                    <p class="text-white font-medium text-2xl mb-4">{{ ach['name'] }}</p>
+                    <div class="relative">
+                        <div class="blur-sm">
+                            <img src="{{ ach['icon'] }}" class="w-32 h-auto z-10 border-2 rounded-full">
+                            <hr class="bg-black/35 rounded-full absolute inset-0 h-full">
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="gray" class="bi bi-lock-fill absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col gap-2 mt-4">
+                      <p class="text-gray-300 font-normal text-sm text-center">{{ ach['description'] }}</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bookmark-x-fill absolute right-2 top-0 text-white" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6.854 5.146a.5.5 0 1 0-.708.708L7.293 7 6.146 8.146a.5.5 0 1 0 .708.708L8 7.707l1.146 1.147a.5.5 0 1 0 .708-.708L8.707 7l1.147-1.146a.5.5 0 0 0-.708-.708L8 6.293z"/>
+                      </svg>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

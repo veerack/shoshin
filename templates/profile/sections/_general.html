@@ -1,0 +1,119 @@
+<div id="_sho-mng-div-general" class="bg-[#191f22] overflow-y-scroll w-screen md:w-full">
+    <div class="flex flex-col gap-8 p-4 items-center justify-center">
+        <div class="flex flex-col gap-4 w-full md:w-4/5">
+            <h1 class="text-white font-bold text-4xl w-4/5 mt-8">General Settings</h1>
+        </div>
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-row gap-2 items-center">
+                    <p class="text-white font-medium text-2xl">Media Reposts</p>
+                </div>
+                <p class="text-gray-300 font-normal text-sm">Wether or not you want to allow other users to repost your posts. If you disable this, users will not be able to repost them.</p>
+                <div class="flex flex-row gap-2 items-center mb-2">
+                    {% if data['reposts_allowed'] %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-check-lg" viewBox="0 0 16 16">
+                            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                        </svg>
+                    {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707 5.354 11.354a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    {% endif %}
+                    <p class="{{ 'text-green-400' if data['reposts_allowed'] else 'text-red-400' }} font-normal text-md">{{ 'Reposts currently allowed.' if data['reposts_allowed'] else 'Reposts currently disabled.' }}</p>
+                </div>
+            </div>
+            <button class="bg-orange-500 hover:bg-orange-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md block md:absolute mt-4 md:mt-0 md:right-16 md:top-10 text-white text-md font-normal">
+            {{ 'Disable Reposts' if data['reposts_allowed'] else 'Enable Reposts' }}
+            </button>
+        </div>
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-row gap-2 items-center">
+                    <p class="text-white font-medium text-2xl">Comments</p>
+                </div>
+                <p class="text-gray-300 font-normal text-sm">Wether or not you want to allow other users to leave comments under your posts.</p>
+                <div class="flex flex-row gap-2 items-center mb-2">
+                    {% if data['comments_allowed'] %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-check-lg" viewBox="0 0 16 16">
+                            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                        </svg>
+                    {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707 5.354 11.354a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    {% endif %}
+                    <p class="{{ 'text-green-400' if data['comments_allowed'] else 'text-red-400' }} font-normal text-md">{{ 'Comments currently allowed.' if data['comments_allowed'] else 'Comments currently disabled.' }}</p>
+                </div>
+            </div>
+            <button class="bg-orange-500 hover:bg-orange-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md block md:absolute mt-4 md:mt-0 md:right-16 md:top-10 text-white text-md font-normal">
+            {{ 'Disable Comments' if data['comments_allowed'] else 'Enable Comments' }}
+            </button>
+        </div>
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-row gap-2 items-center">
+                    <p class="text-white font-medium text-2xl">Post Mentions</p>
+                </div>
+                <p class="text-gray-300 font-normal text-sm">Wether or not you want to allow other users to mention you in their posts.</p>
+                <div class="flex flex-row gap-2 items-center mb-2">
+                    {% if data['mentions_allowed'] %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-check-lg" viewBox="0 0 16 16">
+                            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                        </svg>
+                    {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707 5.354 11.354a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    {% endif %}
+                    <p class="{{ 'text-green-400' if data['mentions_allowed'] else 'text-red-400' }} font-normal text-md">{{ 'Mentions currently allowed.' if data['mentions_allowed'] else 'Mentions currently disabled.' }}</p>
+                </div>
+            </div>
+            <button class="bg-orange-500 hover:bg-orange-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md block md:absolute mt-4 md:mt-0 md:right-16 md:top-10 text-white text-md font-normal">
+            {{ 'Disable Mentions' if data['mentions_allowed'] else 'Enable Mentions' }}
+            </button>
+        </div>
+        <hr class="h-px w-4/5 bg-gray-200 border-0 mx-4 mb-6 mt-6">
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-row gap-2 items-center">
+                    <p class="text-white font-medium text-2xl">Notifications</p>
+                </div>
+                <p class="text-gray-300 font-normal text-sm">Choose what you want to receive notifications for using the dropdown on the right.</p>
+            </div>
+            <div class="block md:absolute mt-4 md:mt-0 md:right-16 md:top-6 text-left">
+                <div>
+                    <button type="button" class="inline-flex justify-center w-full bg-orange-500 hover:bg-orange-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md text-white text-md font-normal" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                    {{ 'All Notifications' if data['notifications_allowed'] == 0 else 'Only Mentions' }}
+                    <!-- Heroicon name: solid/chevron-down -->
+                    <svg class="-mr-1 ml-2 h-5 w-32 md:w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    </button>
+                </div>
+
+                <div id="dropdownMenu" class="hidden origin-top-right absolute right-0 mt-2 w-72 rounded-md shadow-lg bg-orange-500 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                    <div class="p-2" role="none">
+                        <div class="flex flex-col gap-1 px-4 py-2 hover:bg-gray-100/30 hover:rounded-md hover:cursor-pointer" id="menu-item-0">
+                            <div class="flex flex-row gap-2 items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+                                </svg>
+                                <a class="text-white font-bold text-lg" role="menuitem" tabindex="-1">All Notifications</a>
+                            </div>
+                            <p class="text-black font-normal text-sm">You will receive notifications for all activities on the platform, such as Reposts, Comments, Mentions, Likes.</p>
+                        </div>
+                        <div class="flex flex-col gap-1 px-4 py-2 hover:bg-gray-100/30 hover:rounded-md hover:cursor-pointer" id="menu-item-1">
+                            <div class="flex flex-row gap-2 items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" class="bi bi-at" viewBox="0 0 16 16">
+                                    <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914"/>
+                                </svg>
+                                <a class="text-white font-bold text-lg" role="menuitem" tabindex="-1">Only Mentions</a>
+                            </div>
+                            <p class="text-black font-normal text-sm">You will only receive notifications for Mentions on the platform.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

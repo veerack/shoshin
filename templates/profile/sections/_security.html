@@ -1,0 +1,107 @@
+<div id="_sho-mng-div-security" class="bg-[#191f22] overflow-y-scroll w-screen md:w-full">
+    <div class="flex flex-col gap-8 p-4 items-center justify-center">
+        <div class="flex flex-col gap-4 w-full md:w-4/5">
+            <h1 class="text-white font-bold text-4xl w-4/5 mt-8">Security & Privacy</h1>
+            <div class="flex flex-row gap-3 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                  <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                  <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                </svg>
+                <p class="text-gray-300 text-sm md:text-md">Options marked with this symbol are critical edits, and will disconnect your account from all sessions.
+            </div>
+        </div>
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-row gap-2 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                        <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                        <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                    </svg>
+                    <p class="text-white font-medium text-2xl">E-mail Address</p>
+                </div>
+                <p class="text-gray-300 font-normal text-sm mb-4">This is the e-mail address connected to this account and used to log in.</p>
+                <input disabled id="_sho-mng-email-field" type="email" class="w-full md:w-96 h-12 bg-[#2A3439] text-white text-lg p-4 rounded-md border-2 border-orange-500 hover:cursor-not-allowed" value="{{ data['email'] }}" placeholder="Email Address"/>
+            </div>
+            <button class="bg-orange-500 hover:bg-orange-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md block md:absolute mt-4 md:mt-0 md:right-16 md:top-16 text-white text-md font-normal">
+            Edit your e-mail address
+            </button>
+        </div>
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-row gap-2 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                        <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                        <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                    </svg>
+                    <p class="text-white font-medium text-2xl">Password</p>
+                </div>
+                <p class="text-gray-300 font-normal text-sm mb-4">This is the password you use to log-in into your <a href="https://beta.shoshin.moe" class="text-orange-500 hover:cursor-pointer hover:underline underline-offset-4 decoration-orange-500">shoshin.moe</a> account.</p>
+                <input disabled id="_sho-mng-password" type="password" class="w-full md:w-96 h-12 bg-[#2A3439] text-white text-lg p-4 rounded-md border-2 border-orange-500 hover:cursor-not-allowed" value="{{ data['password'] }}" placeholder="Password"/>
+            </div>
+            <button class="bg-orange-500 hover:bg-orange-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md block md:absolute mt-4 md:mt-0 md:right-16 md:top-16 text-white text-md font-normal">
+            Edit Password
+            </button>
+        </div>
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-row gap-2 items-center">
+                    <p class="text-white font-medium text-2xl">Two-Factor Authentication (2FA)</p>
+                </div>
+                <p class="text-gray-300 font-normal text-sm mb-4">
+                  Two-Factor Authentication (2FA) is a secure method to verify that the person trying to log-in into the account<br>is actually the owner of it, by sending a mail to the E-mail Address associated with the account.
+                  <p class="flex flex-row gap-3 items-center text-gray-300 text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="orange" class="bi bi-exclamation-circle w-32 md:w-auto" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                      </svg>
+                      It's highly suggested to keep this enabled, as if someone tries to access your account. they will need to have access to your e-mail inbox as well in order to succeed in.
+                  </p>
+                </p>
+            </div>
+            <button class="bg-orange-500 hover:bg-orange-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md block md:absolute mt-4 md:mt-0 md:right-16 md:top-16 text-white text-md font-normal">
+            {% if data['mfa'] %}
+                Disable 2FA
+            {% else %}
+                Enable 2FA
+            {% endif %}
+            </button>
+        </div>
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-row gap-2">
+                <div class="flex flex-col gap-2">
+                    <p class="text-white font-medium text-2xl">Profile Visibility</p>
+                    <p class="text-gray-300 font-normal text-sm">Set your profile visibility to either public or private. <br>Public profiles are visible to everyone, while private profiles are only visible to you and your friends.</p>
+                </div>
+            </div>
+            <button class="bg-orange-500 hover:bg-orange-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md block md:absolute mt-4 md:mt-0 md:right-16 md:top-8 text-white text-md font-normal">
+            {% if data['visibility'] %}
+                <p class="flex flex-row gap-3 items-center text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-lock" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
+                    </svg>
+                    Switch to Private
+                </p>
+            {% else %}
+                <p class="flex flex-row gap-3 items-center text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-unlock" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2m-1 6V9a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1z"/>
+                    </svg>
+                    Switch to Public
+                </p>
+            {% endif %}
+            </button>
+        </div>
+        <hr class="h-px w-4/5 bg-gray-200 border-0 mx-4 mb-6 mt-6">
+        <div class="border-orange-500 border w-full md:w-4/5 p-4 gap-16 rounded-sm relative">
+            <div class="flex flex-row gap-2">
+                <div class="flex flex-col gap-2">
+                    <p class="text-white font-medium text-2xl">Delete Account</p>
+                    <p class="text-gray-300 font-normal text-sm">This is a critical action and will delete your account permanently from our servers, along with<br> all the uploads you've made with it. This is irreversible and cannot be undone even by the administrators.</p>
+                </div>
+            </div>
+            <button class="bg-red-500 hover:bg-red-400 transition duration-300 hover:cursor-pointer h-auto p-3 rounded-md block md:absolute mt-4 md:mt-0 md:right-16 md:top-8 text-white text-md font-normal">
+            Delete Account
+            </button>
+        </div>
+    </div>
+</div>

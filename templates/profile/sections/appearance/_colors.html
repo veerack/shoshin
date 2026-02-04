@@ -1,0 +1,227 @@
+<!-- Color Scheme Selector -->
+<div class="flex flex-col gap-4 w-4/5">
+    <h2 class="text-white font-bold text-2xl">Color Scheme</h2>
+    <div class="flex gap-4 flex-wrap">
+        <!-- Solid Colors -->
+        <div class="relative group">
+            <button class="bg-red-500 w-16 h-16 rounded-full relative" data-color="bg-red-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute left-1/2 transform -translate-x-1/2 bottom-20 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Crimson Red</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-green-500 w-16 h-16 rounded-full relative" data-color="bg-green-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Forest Green</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-blue-500 w-16 h-16 rounded-full relative" data-color="bg-blue-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Ocean Blue</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-yellow-500 w-16 h-16 rounded-full relative" data-color="bg-yellow-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Sunny Yellow</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-purple-500 w-16 h-16 rounded-full relative" data-color="bg-purple-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Royal Purple</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-pink-500 w-16 h-16 rounded-full relative" data-color="bg-pink-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Blush Pink</p>
+            </div>
+        </div>
+
+        <!-- Gradient Colors -->
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-green-400 to-blue-500 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-green-400 to-blue-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Emerald Bay</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-pink-500 to-orange-500 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-pink-500 to-orange-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Sunset Glow</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-purple-500 to-pink-500 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-purple-500 to-pink-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Lavender Blush</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-yellow-500 to-red-500 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-yellow-500 to-red-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Sunset Flame</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-blue-500 to-purple-600 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-blue-500 to-purple-600">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Twilight</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-teal-400 to-blue-500 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-teal-400 to-blue-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Ocean Wave</p>
+            </div>
+        </div>
+        
+        <!-- More Colors -->
+        <div class="relative group">
+            <button class="bg-indigo-500 w-16 h-16 rounded-full relative" data-color="bg-indigo-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Indigo Night</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gray-500 w-16 h-16 rounded-full relative" data-color="bg-gray-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Slate Gray</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-orange-500 w-16 h-16 rounded-full relative" data-color="bg-orange-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Tangerine</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-red-500 to-yellow-500 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-red-500 to-yellow-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Firestorm</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-indigo-500 to-purple-500 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-indigo-500 to-purple-500">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Mystic Night</p>
+            </div>
+        </div>
+        <div class="relative group">
+            <button class="bg-gradient-to-r from-green-300 to-green-700 w-16 h-16 rounded-full relative" data-color="bg-gradient-to-r from-green-300 to-green-700">
+                <div class="absolute -top-0 -right-1 rounded-full bg-orange-500 h-auto w-auto p-1 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-check2" viewBox="0 0 16 16">
+                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+            </button>
+            <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <p class="bg-black text-white text-sm rounded py-2 px-4 whitespace-nowrap pop-glow">Forest Breeze</p>
+            </div>
+        </div>
+    </div>
+</div>

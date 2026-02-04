@@ -12,6 +12,8 @@
     src: url('../fonts/Source Han Sans CN Regular.otf') format('truetype');
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 .sans-it {
   font-family: 'Source Han Sans CN Regular', sans-serif;
 }
@@ -52,6 +54,19 @@ body.dark {
   background-color: var(--dark-bg-color); /* Switch to dark mode */
   --input-glow-color: 0 0 28px rgba(255, 255, 255, 1.5);
 }
+
+body.basic-font {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body.poppins {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
 
 .bg-fade-bottom::after {
   content: '';
@@ -96,4 +111,52 @@ body.dark .bg-fade-bottom::after {
 #googleSignInButton {
   display: flex;
   justify-content: center;
+}
+
+.glow {
+  box-shadow: 0 0 28px rgb(201, 235, 10, 1);
+}
+
+.pop-glow {
+  box-shadow: 0 0 28px rgba(255, 255, 255, 0.3);
+}
+
+.glow-lock {
+  box-shadow: 0 0 28px rgb(235, 25, 10);
+}
+
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #2A3439;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 1s ease-out;
+}
+
+.loading-indicator {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #e6941a;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.selected {
+  border: 3px solid #f97316;
 }

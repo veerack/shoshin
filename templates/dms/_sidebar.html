@@ -1,0 +1,29 @@
+<div id="menuSidebar" class="bg-[#191f22] w-full border-r-2 border-orange-500 absolute md:relative md:top-0 h-full z-20 overflow-auto -translate-x-full md:-translate-x-0 transition-transform duration-300 z-30">
+    <div class="flex flex-col gap-2 h-full">
+        <div class="flex flex-row items-center p-4 gap-2 bg-orange-500 mb-4">
+            <img id="_sho-loggedInUserAvatar" src="{{ data['avatar'] if data['avatar'] else '/static/assets/default_avatar.png'}}" alt="wuwa" class="w-8 h-auto rounded-full"/>
+            <p id="_sho-loggedInUserName" class="text-white text-md font-semibold truncate ...">{{ data['username'] }}</p>
+        </div>
+        <p class="text-gray-400 font-medium text-sm mx-2 px-2 mt-4">DIRECT MESSAGES</p>
+        {% if friends | length == 0 %}
+            <p class="text-gray-400 font-medium text-sm mx-2 px-2">No friends found.</p>
+        {% endif %}
+        {% for friend in friends %}
+        <div class="flex flex-row gap-2 mx-2 rounded-md px-2 items-center hover:bg-[#2d3336] hover:cursor-pointer _sho-DMsSidebarUserElement group/dmuser">
+            <img id="_sho-DMsAvatar" src="{{ friend['avatar'] if friend['avatar'] else '/static/assets/default_avatar.png' }}" alt="profile picture" class="w-10 h-10 rounded-full">
+            <div class="flex flex-col p-2 truncate">
+                <div class="flex flex-row gap-2">
+                    <p id="_sho-DMsUsername" class="text-white text-lg font-semibold">{{ friend['username'] }}</p>
+                    <p id="_sho-DMsUid" class="hidden">{{ friend['uid'] }}</p>
+                </div>
+                {% if messages['messages'] | length > 0 %}
+                    <p id="_sho-lastMessageInChat" class="text-gray-400 text-sm font-normal truncate">{{ messages[0]['message'] }}</p>
+                {% else %}
+                    <a id="_sho-lastMessageInChat" class="text-gray-400 text-sm font-normal truncate">{{ friend['bio'] if friend['bio'] else '...' }}</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-10"></div>

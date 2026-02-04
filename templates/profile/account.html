@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" content="#ffffff"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Shoshin.moe | Login - Save your Wuthering Waves data into your account!</title>
+    <meta name="description" content="Shoshin.moe is a website incentrated on Wutherhing Waves! Wether you need to check your convene's history, share your character builds or gather some informations, we're here for that!"/>
+    <meta name="keywords" content="Wuthering Waves, character build, generator, image, wuwa"/>
+    <meta name="author" content="shoshin.moe" />
+    <meta name='og:title' content='Shoshin.moe | Login'>
+    <meta name='og:url' content='https://shoshin.moe/login'>
+    <meta name='og:image' content='https://beta.shoshin.moe/static/assets/favicon_wuwa.png'>
+    <meta name='og:site_name' content='shoshin.moe'>
+    <meta name='og:description' content="Shoshin.moe is a website incentrated on Wutherhing Waves! Wether you need to check your convene's history, share your character builds or gather some informations, we're here for that!">
+    <meta property="og:image" content="https://beta.shoshin.moe/static/assets/favicon_wuwa.png"/>
+    <meta name='language' content='EN'>
+    <meta name='url' content='https://www.shoshin.moe'>
+    <link rel="icon" href="../static/assets/favicon_wuwa.png"/>
+    <link rel="stylesheet" href="../static/css/output.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script type="module" src="../static/js/data/account.js" defer></script>
+    <style>
+        .CodeMirror {
+            height: auto;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-44JD26YV2G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-44JD26YV2G');
+</script>
+<body class="bg-[#2A3439] basic-font h-screen">
+    {% include 'profile/_loading.html' %}
+    <grid class="grid grid-cols-[theme(spacing.64)_1fr] grid-rows-[theme(spacing.24)_1fr] h-screen">
+        {% include 'profile/_navbar.html' %}
+        {% include 'profile/_sidebar.html' %}
+        {% include 'profile/sections/_details.html' %}
+        {% include 'profile/sections/_security.html' %}
+        {% include 'profile/sections/_general.html' %}
+        {% include 'profile/sections/_achievements.html' %}
+        {% include 'profile/sections/_friends.html' %}
+        {% include 'profile/sections/appearance/_top.html' %}
+        {% include 'profile/sections/appearance/_colors.html' %}
+        {% include 'profile/sections/appearance/_fonts.html' %}
+        {% include 'profile/sections/appearance/_background.html' %}
+        {% include 'profile/sections/appearance/_avatar.html' %}
+        {% include 'profile/sections/appearance/_customcss.html' %}
+        {% include 'profile/sections/appearance/_preview.html' %}
+    </grid>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/css-hint.min.js"></script>
+    <script src="../../static/js/data/_preview.js"></script>
+    <script src="../../static/js/data/_preload.js"></script>
+</body>
+</html>

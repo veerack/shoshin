@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" content="#ffffff"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Shoshin.moe API (Internal)</title>
+    <meta name="description" content="Explore the internal API of Shoshin.moe, used to process and retreive data to display over the website (in most cases)."/>
+    <meta name="keywords" content="Wuthering Waves, character build, generator, image, wuwa"/>
+    <meta name="author" content="shoshin.moe" />
+    <meta name='og:title' content='Shoshin.moe API'>
+    <meta name='og:url' content='https://shoshin.moe/docs?k=96b982639c378xt789263y987cx6238c6.2394yc9238745vaiysdfq32'>
+    <meta name='og:image' content='https://beta.shoshin.moe/static/assets/favicon.png'>
+    <meta name='og:site_name' content='shoshin.moe'>
+    <meta name='og:description' content="Explore the internal API of Shoshin.moe, used to process and retreive data to display over the website (in most cases).">
+    <meta property="og:image" content="https://beta.shoshin.moe/static/assets/favicon.png"/>
+    <meta name='language' content='EN'>
+    <meta name='url' content='https://shoshin.moe/docs?k=96b982639c378xt789263y987cx6238c6.2394yc9238745vaiysdfq32'>
+    <link rel="icon" href="../static/assets/favicon.png"/>
+    <link rel="stylesheet" href="../static/css/output.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/hint/show-hint.min.css">
+    <link rel="stylesheet" href="../static/css/output.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body.dark-mode {
+            background-color: #191f22;
+            color: #a0aec0;
+        }
+        body.dark-mode .bg-gray-300 {
+            background-color: #2d3748 !important;
+        }
+        body.dark-mode .bg-white {
+            background-color: #2d3748 !important;
+        }
+        body.dark-mode .text-gray-700 {
+            color: #ffffff !important;
+        }
+        body.dark-mode .text-gray-600 {
+            color: #cbd5e0 !important;
+        }
+        body.dark-mode .bg-gray-100 {
+            background-color: #6d798d !important;
+        }
+        body {
+            overflow-x: hidden; /* Prevent horizontal overflow */
+        }
+        .hidden-sidebar {
+            display: none;
+        }
+        .shown-sidebar {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 poppins">
+    <!-- Navbar for Mobile View -->
+    <div class="md:hidden flex justify-between items-center p-4 bg-[#191f22] text-white w-full">
+        <button id="toggle-left-sidebar" class="px-4 py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" class="bi bi-list" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+            </svg>
+        </button>
+        <button id="toggle-right-sidebar" class="px-4 py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" class="bi bi-code-slash" viewBox="0 0 16 16">
+                <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0"/>
+            </svg>
+        </button>
+    </div>
+    <div class="flex flex-row h-screen">
+        <div id="routes-div" class="w-full md:w-1/5 bg-gray-300 shadow-md p-4 h-auto overflow-auto absolute md:sticky top-0 left-0 transform -translate-x-full md:transform-none hidden md:block">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex flex-row gap-1 items-end">
+                    <img src="../static/assets/shoshinapilogo.png" alt="Shoshin API Logo" class="w-64 h-auto">
+                    <!-- <h1 class="text-3xl font-bold text-gray-700" id="api-title"></h1> -->
+                </div>
+                <button id="toggle-dark-mode" class="bg-transparent border border-orange-500 text-gray-700 font-semibold p-2 hover:bg-orange-500/50 transform transition duration-100 ease-in rounded-sm">
+                    Toggle Dark Mode
+                </button>
+            </div>
+            <div class="flex flex-row gap-2 items-center">
+                <p class="text-md text-gray-500" id="openapi-version"></p>
+                <hr class="h-2 w-2 bg-gray-700 rounded-full">
+                <div class="flex flex-row gap-1 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                    </svg>
+                    <a href="https://github.com/seizoux/shoshin/tree/main" class="text-gray-700 hover:text-blue-700 hover:underline hover:cursor-pointer transform transition duration-150">GitHub</a>
+                </div>
+                <hr class="h-2 w-2 bg-gray-700 rounded-full">
+                <p class="text-sm text-gray-600" id="api-version"></p>
+            </div>
+            <p class="mt-4 mb-4">Hi there! This API is intended to be used only internally, to provide and process data for the Shoshin app.<br> If you're on this page, you're probably a developer or contributor of the app, so feel free to explore the API documentation below.<br>
+                Every endpoint is documented with a brief description, parameters, request body, and response schema, and they can be queried only within the App itself (shoshin.moe / beta.shoshin.moe), not from external sources.
+            </p>
+            <hr class="h-px w-auto bg-gray-200 border-0 mb-6 mt-6">
+            <h2 class="text-xl font-bold mb-4">Routes</h2>
+            <ul id="routes-list" class="list-none space-y-2"></ul>
+        </div>
+        <div class="w-full md:w-3/5 container mx-auto py-8 px-4 overflow-y-auto h-screen">
+            <div id="docs"></div>
+        </div>
+        <div id="contributors-div" class="w-full md:w-1/5 bg-gray-300 shadow-md p-4 h-screen absolute overflow-y-hidden md:sticky top-0 right-0 transform -translate-x-full md:transform-none hidden md:block">
+            <div class="flex flex-col gap-1 mb-4">
+                <h2 class="text-3xl font-bold text-gray-700">Contributors</h2>
+                <p class="text-gray-600 text-sm block md:hidden">Click anywhere to close this sidebar!</p>
+            </div>
+            <p class="text-md text-gray-600 mb-4">These are the contributors who have helped build and maintain the Shoshin app throughout its development. Thank you for your hard work!</p>
+            <div class="flex flex-col gap-2 mb-4">
+                <div class="flex flex-row gap-1 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-bezier2" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 2.5A1.5 1.5 0 0 1 2.5 1h1A1.5 1.5 0 0 1 5 2.5h4.134a1 1 0 1 1 0 1h-2.01q.269.27.484.605C8.246 5.097 8.5 6.459 8.5 8c0 1.993.257 3.092.713 3.7.356.476.895.721 1.787.784A1.5 1.5 0 0 1 12.5 11h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H6.866a1 1 0 1 1 0-1h1.711a3 3 0 0 1-.165-.2C7.743 11.407 7.5 10.007 7.5 8c0-1.46-.246-2.597-.733-3.355-.39-.605-.952-1-1.767-1.112A1.5 1.5 0 0 1 3.5 5h-1A1.5 1.5 0 0 1 1 3.5zM2.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm10 10a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                    </svg>
+                    <p class="text-gray-700 font-normal text-md">Pull Requests</p>
+                </div>
+                <div class="flex flex-row gap-1 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="orange" class="bi bi-sort-down-alt" viewBox="0 0 16 16">
+                        <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5"/>
+                    </svg>
+                    <p class="text-gray-700 font-normal text-md">Commits</p>
+                </div>
+            </div>
+            <hr class="h-px w-auto bg-gray-200 border-0 mb-6 mt-6">
+            <div id="contributors-list" class="space-y-4"></div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-json.min.js"></script>
+    <script>
+        function formatSchema(schema) {
+            return Object.keys(schema).reduce((acc, key) => {
+                acc[key] = schema[key].type;
+                return acc;
+            }, {});
+        }
+
+        function schemaToString(schema) {
+            let result = '{\n';
+            for (const [key, value] of Object.entries(schema)) {
+                result += `  "${key}": ${value},\n`;
+            }
+            result = result.slice(0, -2); // Remove the last comma and newline
+            result += '\n}';
+            return result;
+        }
+
+        async function fetchDocs() {
+            const response = await fetch('/openapi.json');
+            const apiDocs = await response.json();
+            const docsContainer = document.getElementById('docs');
+            const routesList = document.getElementById('routes-list');
+
+            // Set API info
+            //document.getElementById('api-title').textContent = apiDocs.info.title;
+            document.getElementById('api-version').textContent = `v. ${apiDocs.info.version}`;
+            document.getElementById('openapi-version').textContent = `OpenAPI: ${apiDocs.openapi}`;
+
+            if (apiDocs.paths) {
+                Object.keys(apiDocs.paths).forEach(path => {
+                    const endpoint = apiDocs.paths[path];
+                    const methods = Object.keys(endpoint);
+                    const routeItem = document.createElement('li');
+                    const routeButton = document.createElement('button');
+                    routeButton.innerHTML = path;
+                    routeButton.className = 'bg-transparent border border-orange-500 text-gray-700 font-semibold p-2 w-full text-left hover:bg-orange-500/50 transform transition duration-100 ease-in rounded-sm';
+                    routeButton.onclick = () => {
+                        document.getElementById(path).scrollIntoView({ behavior: 'smooth' });
+                    };
+                    routeItem.appendChild(routeButton);
+                    routesList.appendChild(routeItem);
+
+                    methods.forEach(method => {
+                        const operation = endpoint[method];
+                        const div = document.createElement('div');
+                        div.classList.add('endpoint', 'bg-white', 'shadow-md', 'rounded-lg', 'p-6', 'mb-4', 'border', 'border-orange-500');
+                        div.setAttribute('id', path);
+                        
+                        const title = document.createElement('h2');
+                        title.classList.add('text-2xl', 'font-semibold', 'text-gray-700');
+                        title.textContent = `${method.toUpperCase()} ${path}`;
+                        div.appendChild(title);
+                        
+                        if (operation.summary) {
+                            const summary = document.createElement('p');
+                            summary.classList.add('mt-2', 'font-medium', 'text-gray-700');
+                            summary.textContent = operation.summary;
+                            div.appendChild(summary);
+                        }
+
+                        if (operation.parameters && operation.parameters.length > 0) {
+                            const paramsTitle = document.createElement('h3');
+                            paramsTitle.classList.add('mt-4', 'text-lg', 'font-semibold');
+                            paramsTitle.textContent = 'Parameters:';
+                            div.appendChild(paramsTitle);
+
+                            const ul = document.createElement('ul');
+                            ul.classList.add('list-disc', 'ml-5');
+
+                            operation.parameters.forEach(param => {
+                                const li = document.createElement('li');
+                                li.textContent = `${param.name} (${param.in}): ${param.schema.type} - ${param.description || ''}`;
+                                ul.appendChild(li);
+                            });
+
+                            div.appendChild(ul);
+                        }
+
+                        if (operation.requestBody) {
+                            const reqBodyTitle = document.createElement('h3');
+                            reqBodyTitle.classList.add('mt-4', 'text-lg', 'font-semibold');
+                            reqBodyTitle.textContent = 'Request Body:';
+                            div.appendChild(reqBodyTitle);
+
+                            const pre = document.createElement('pre');
+                            pre.classList.add('code-block', 'bg-gray-100', 'p-4', 'rounded', 'mt-2', 'overflow-x-auto');
+                            const code = document.createElement('code');
+                            code.classList.add('language-json');
+                            const requestBodySchema = operation.requestBody.content['application/json'].schema.properties;
+                            const formattedRequestBody = formatSchema(requestBodySchema);
+                            code.textContent = schemaToString(formattedRequestBody);
+                            pre.appendChild(code);
+                            div.appendChild(pre);
+                        }
+
+                        if (operation.responses) {
+                            const responsesDiv = document.createElement('div');
+                            const responsesTitle = document.createElement('h1');
+                            responsesTitle.classList.add('text-lg', 'font-semibold', 'mt-4', 'mb-2');
+                            responsesTitle.textContent = 'Responses';
+                            responsesDiv.appendChild(responsesTitle);
+                        
+                            if (operation.responses["200"]) {
+                                const resTitle200 = document.createElement('div');
+                                resTitle200.classList.add('flex', 'flex-row', 'gap-2', 'items-center');
+                                resTitle200.innerHTML = '<hr class="h-2 w-2 bg-green-500 rounded-full"><p class="text-gray-700 font-semibold text-md">200 OK</p>';
+                                responsesDiv.appendChild(resTitle200);
+                        
+                                const pre200 = document.createElement('pre');
+                                pre200.classList.add('code-block', 'bg-gray-100', 'p-4', 'rounded', 'mt-2', 'overflow-x-auto');
+                                const code200 = document.createElement('code');
+                                code200.classList.add('language-json');
+                                const responseBodySchema200 = operation.responses["200"].content['application/json'].schema.properties;
+                                const formattedResponseBody200 = formatSchema(responseBodySchema200);
+                                code200.textContent = schemaToString(formattedResponseBody200);
+                                pre200.appendChild(code200);
+                                responsesDiv.appendChild(pre200);
+                            }
+                        
+                            if (operation.responses["400"]) {
+                                const resTitle400 = document.createElement('div');
+                                resTitle400.classList.add('flex', 'flex-row', 'gap-2', 'items-center');
+                                resTitle400.innerHTML = '<hr class="h-2 w-2 bg-red-500 rounded-full"><p class="text-gray-700 font-semibold text-md">400 Bad Request</p>';
+                                responsesDiv.appendChild(resTitle400);
+                        
+                                const pre400 = document.createElement('pre');
+                                pre400.classList.add('code-block', 'bg-gray-100', 'p-4', 'rounded', 'mt-2', 'overflow-x-auto');
+                                const code400 = document.createElement('code');
+                                code400.classList.add('language-json');
+                                const responseBodySchema400 = operation.responses["400"].content['application/json'].schema.properties;
+                                const formattedResponseBody400 = formatSchema(responseBodySchema400);
+                                code400.textContent = schemaToString(formattedResponseBody400);
+                                pre400.appendChild(code400);
+                                responsesDiv.appendChild(pre400);
+                            }
+                        
+                            div.appendChild(responsesDiv);
+                        }
+
+                        docsContainer.appendChild(div);
+                    });
+                });
+                Prism.highlightAll();  // Apply syntax highlighting
+            } else {
+                docsContainer.textContent = 'No API documentation found.';
+            }
+        }
+
+        async function fetchContributors() {
+            const repoOwner = 'seizoux';
+            const repoName = 'shoshin';
+        
+            // Fetch contributors
+            const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contributors`);
+            const contributors = await response.json();
+            const contributorsList = document.getElementById('contributors-list');
+        
+            // Iterate over contributors
+            for (const contributor of contributors) {
+                // Fetch the number of PRs by this contributor
+                const prResponse = await fetch(`https://api.github.com/search/issues?q=repo:${repoOwner}/${repoName}+type:pr+author:${contributor.login}`);
+                const prData = await prResponse.json();
+                const prCount = prData.total_count;
+        
+                // Fetch the number of commits by this contributor
+                const commitResponse = await fetch(`https://api.github.com/search/commits?q=repo:${repoOwner}/${repoName}+author:${contributor.login}`);
+                const commitData = await commitResponse.json();
+                const commitCount = commitData.total_count;
+        
+                // Create the contributor element
+                const div = document.createElement('div');
+                div.classList.add('flex', 'items-center', 'space-x-4');
+        
+                const img = document.createElement('img');
+                img.src = contributor.avatar_url;
+                img.alt = contributor.login;
+                img.classList.add('w-10', 'h-10', 'rounded-full');
+        
+                const name = document.createElement('p');
+                name.textContent = contributor.login;
+                name.classList.add('font-medium', 'text-gray-700');
+        
+                const separator = document.createElement('span');
+                separator.textContent = '|';
+                separator.classList.add('text-gray-500');
+        
+                const stats = document.createElement('div');
+                stats.classList.add('flex', 'flex-row', 'gap-2', 'items-center');
+                stats.innerHTML = `
+                    <div class="text-gray-700 font-semibold text-md flex flex-row gap-2">
+                        <div class="flex flex-row gap-1 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-bezier2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 2.5A1.5 1.5 0 0 1 2.5 1h1A1.5 1.5 0 0 1 5 2.5h4.134a1 1 0 1 1 0 1h-2.01q.269.27.484.605C8.246 5.097 8.5 6.459 8.5 8c0 1.993.257 3.092.713 3.7.356.476.895.721 1.787.784A1.5 1.5 0 0 1 12.5 11h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5H6.866a1 1 0 1 1 0-1h1.711a3 3 0 0 1-.165-.2C7.743 11.407 7.5 10.007 7.5 8c0-1.46-.246-2.597-.733-3.355-.39-.605-.952-1-1.767-1.112A1.5 1.5 0 0 1 3.5 5h-1A1.5 1.5 0 0 1 1 3.5zM2.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm10 10a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                            </svg>
+                            <p class="text-gray-700 font-normal text-md">${prCount}</p>
+                        </div>
+                        <div class="flex flex-row gap-1 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="orange" class="bi bi-sort-down-alt" viewBox="0 0 16 16">
+                                <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5"/>
+                            </svg>
+                            <p class="text-gray-700 font-normal text-md">${commitCount}</p>
+                        </div>
+                    </div>
+                `;
+        
+                div.appendChild(img);
+                div.appendChild(name);
+                div.appendChild(separator);
+                div.appendChild(stats);
+        
+                contributorsList.appendChild(div);
+            }
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    
+        document.getElementById('toggle-dark-mode').addEventListener('click', toggleDarkMode);
+    
+        fetchDocs().catch(error => {
+            const docsContainer = document.getElementById('docs');
+            docsContainer.textContent = 'Failed to load API documentation: ' + error.message;
+        });
+    
+        fetchContributors().catch(error => {
+            const contributorsList = document.getElementById('contributors-list');
+            contributorsList.textContent = 'Failed to load contributors: ' + error.message;
+        });
+    
+        const toggleLeftSidebar = document.getElementById('toggle-left-sidebar'); // Button to toggle left sidebar
+        const toggleRightSidebar = document.getElementById('toggle-right-sidebar'); // Button to toggle right sidebar
+        
+        const routesDiv = document.getElementById('routes-div'); // Left sidebar
+        const routesList = document.getElementById('routes-list'); // List inside the left sidebar
+        const contributorsDiv = document.getElementById('contributors-div'); // Right sidebar
+        
+        // Function to check if the screen width is mobile
+        const isMobile = () => window.innerWidth < 768;
+        
+        const handleSidebarVisibility = () => {
+            if (!isMobile()) {
+                // Ensure both sidebars are visible on desktop
+                routesDiv.classList.remove('hidden', '-translate-x-full', 'animate-slideOutToLeft', 'animate-slideInFromLeft');
+                contributorsDiv.classList.remove('hidden', 'translate-x-full', 'animate-slideOutToRight', 'animate-slideInFromLeft');
+            }
+        };
+        
+        // Initial check to set sidebar visibility based on screen size
+        handleSidebarVisibility();
+        
+        toggleLeftSidebar.addEventListener('click', () => {
+            if (isMobile()) {
+                if (routesDiv.classList.contains('-translate-x-full')) {
+                    routesDiv.classList.remove('hidden', '-translate-x-full', 'animate-slideOutToLeft');
+                    routesDiv.classList.add('animate-slideInFromLeft');
+                } else {
+                    routesDiv.classList.remove('animate-slideInFromLeft');
+                    routesDiv.classList.add('animate-slideOutToLeft');
+                    setTimeout(() => {
+                        routesDiv.classList.add('hidden', '-translate-x-full');
+                    }, 300); // Match the duration of the animation
+                }
+            }
+        });
+        
+        toggleRightSidebar.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent the click from propagating to the document
+            if (isMobile()) {
+                if (contributorsDiv.classList.contains('-translate-x-full')) {
+                    contributorsDiv.classList.remove('hidden', '-translate-x-full', 'animate-slideOutToLeft');
+                    contributorsDiv.classList.add('animate-slideInFromLeft');
+                } else {
+                    contributorsDiv.classList.remove('animate-slideInFromLeft');
+                    contributorsDiv.classList.add('animate-slideOutToLeft');
+                    setTimeout(() => {
+                        contributorsDiv.classList.add('hidden', '-translate-x-full');
+                    }, 300); // Match the duration of the animation
+                }
+            }
+        });
+        
+        // Add event listener to hide left sidebar when any element inside routes-list is clicked
+        routesList.addEventListener('click', (event) => {
+            if (isMobile() && event.target.closest('#routes-list')) {
+                routesDiv.classList.remove('animate-slideInFromLeft');
+                routesDiv.classList.add('animate-slideOutToLeft');
+                setTimeout(() => {
+                    routesDiv.classList.add('hidden', '-translate-x-full');
+                }, 300); // Match the duration of the animation
+            }
+        });
+        
+        // Add event listener for window resizing
+        window.addEventListener('resize', handleSidebarVisibility);
+        
+        // Add event listener to hide right sidebar when clicking anywhere inside the right sidebar
+        contributorsDiv.addEventListener('click', (event) => {
+            if (isMobile() && contributorsDiv.contains(event.target)) {
+                contributorsDiv.classList.remove('animate-slideInFromLeft');
+                contributorsDiv.classList.add('animate-slideOutToLeft');
+                setTimeout(() => {
+                    contributorsDiv.classList.add('hidden', '-translate-x-full');
+                }, 300); // Match the duration of the animation
+            }
+        });
+    </script>
+</body>
+</html>

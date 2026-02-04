@@ -20,13 +20,11 @@ build/
 
 # JavaScript
 node_modules/
-*.log
-package.json
-packlage-lock.json
+static/js
 
 # CSS
 *.css.map
-*.css~
+*.css
 
 # Environment files
 .env
@@ -83,5 +81,4 @@ packlage-lock.json
 *.bak
 *.old
 *.backup
-*.~*
 *.sock
